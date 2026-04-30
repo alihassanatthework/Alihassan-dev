@@ -1,113 +1,61 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
 import * as THREE from "three";
+import gsap from "gsap";
+import MonitorPreview from "./MonitorPreview";
 
 interface Props {
-  monitorEmissive: number;
-  screenContent: "off" | "code" | "ui";
+  monitorEmissive: number;   // 0..2 — drives both bezel emissive + DOM opacity
+  showScreenContent: boolean; // when true, mount the Html screen
 }
 
-function makeCodeCanvas() {
-  const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 320;
-  const ctx = c.getContext("2d")!;
-  ctx.fillStyle = "#0a0d14";
-  ctx.fillRect(0, 0, c.width, c.height);
-  ctx.font = "13px ui-monospace,SFMono-Regular,Menlo,monospace";
-  const lines: [string, string][] = [
-    ["#a1a1aa", "// portfolio.ts"],
-    ["#71717a", "import { craft } from '~/dev'"],
-    ["", ""],
-    ["#e5e7eb", "export default function Hero() {"],
-    ["#fbbf24", "  const skills = ['react', 'three', 'ai']"],
-    ["#a1a1aa", "  return craft(skills).ship()"],
-    ["#e5e7eb", "}"],
-    ["", ""],
-    ["#10b981", "✓ build  passed"],
-    ["#10b981", "✓ deploy ready"],
-  ];
-  let y = 28;
-  for (const [color, text] of lines) {
-    if (!text) { y += 16; continue; }
-    ctx.fillStyle = color;
-    ctx.fillText(text, 24, y);
-    y += 20;
-  }
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  return tex;
-}
-
-function makeUiCanvas() {
-  const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 320;
-  const ctx = c.getContext("2d")!;
-  ctx.fillStyle = "#0d1117";
-  ctx.fillRect(0, 0, c.width, c.height);
-  ctx.fillStyle = "rgba(255,255,255,0.04)";
-  ctx.fillRect(48, 56, 416, 208);
-  ctx.strokeStyle = "rgba(255,255,255,0.08)";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(48, 56, 416, 208);
-  ctx.fillStyle = "#71717a";
-  ctx.font = "10px ui-monospace,monospace";
-  ctx.fillText("EST. 2026", 72, 86);
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "italic 30px Georgia,serif";
-  ctx.fillText("Welcome to my", 72, 138);
-  ctx.fillText("universe.", 72, 174);
-  ctx.fillStyle = "rgba(255,255,255,0.18)";
-  ctx.fillRect(72, 192, 32, 1);
-  ctx.fillStyle = "#a1a1aa";
-  ctx.font = "10px ui-monospace,monospace";
-  ctx.fillText("SOFTWARE  //  FULL-STACK  //  AI / ML", 72, 220);
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  return tex;
-}
-
-export default function Workspace({ monitorEmissive, screenContent }: Props) {
+export default function Workspace({ monitorEmissive, showScreenContent }: Props) {
   const screenMat = useRef<THREE.MeshStandardMaterial>(null);
+  const laptopScreenMat = useRef<THREE.MeshStandardMaterial>(null);
+  const screenOpacity = useRef({ v: 0 });
 
-  const { codeTex, uiTex } = useMemo(() => {
-    if (typeof document === "undefined") return { codeTex: null, uiTex: null };
-    return { codeTex: makeCodeCanvas(), uiTex: makeUiCanvas() };
-  }, []);
+  // GSAP fade-in for DOM screen so it doesn't hard-flash
+  useEffect(() => {
+    gsap.to(screenOpacity.current, {
+      v: showScreenContent ? 1 : 0,
+      duration: showScreenContent ? 0.8 : 0.3,
+      ease: "power2.out",
+    });
+  }, [showScreenContent]);
 
-  // Subtle screen flicker
+  // Subtle screen flicker for liveness
   useFrame((state) => {
-    if (!screenMat.current) return;
     const t = state.clock.elapsedTime;
     const flicker = Math.sin(t * 12) * 0.03 + Math.sin(t * 27) * 0.02;
-    screenMat.current.emissiveIntensity = monitorEmissive * (1 + flicker * 0.3);
+    if (screenMat.current) {
+      screenMat.current.emissiveIntensity = monitorEmissive * (1 + flicker * 0.25);
+    }
+    if (laptopScreenMat.current) {
+      laptopScreenMat.current.emissiveIntensity = monitorEmissive * 0.65 * (1 + flicker * 0.25);
+    }
   });
-
-  const screenTex =
-    screenContent === "code" ? codeTex :
-    screenContent === "ui" ? uiTex : null;
 
   return (
     <group position={[0, -1, 0]}>
       {/* Floor */}
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[40, 40]} />
-        <meshStandardMaterial color="#08080a" roughness={0.85} metalness={0.05} />
+        <meshStandardMaterial color="#0c0c10" roughness={0.7} metalness={0.15} />
       </mesh>
 
       {/* Back wall */}
       <mesh position={[0, 4, -4]} receiveShadow>
         <planeGeometry args={[24, 8]} />
-        <meshStandardMaterial color="#0c0d12" roughness={0.95} />
+        <meshStandardMaterial color="#0e0f14" roughness={0.95} />
       </mesh>
 
-      {/* Desk top */}
+      {/* Desk top — slight metallic for screen reflections */}
       <mesh position={[0, 1.45, 0]} castShadow receiveShadow>
         <boxGeometry args={[4.4, 0.08, 1.7]} />
-        <meshStandardMaterial color="#1a1a1d" roughness={0.55} metalness={0.15} />
+        <meshStandardMaterial color="#1d1d22" roughness={0.4} metalness={0.25} />
       </mesh>
 
       {/* Desk legs */}
@@ -128,7 +76,6 @@ export default function Workspace({ monitorEmissive, screenContent }: Props) {
         <cylinderGeometry args={[0.06, 0.1, 0.5, 16]} />
         <meshStandardMaterial color="#15161a" roughness={0.4} metalness={0.5} />
       </mesh>
-      {/* Monitor stand base */}
       <mesh position={[0, 1.5, -0.45]} castShadow>
         <boxGeometry args={[0.6, 0.04, 0.32]} />
         <meshStandardMaterial color="#15161a" roughness={0.4} metalness={0.5} />
@@ -137,21 +84,61 @@ export default function Workspace({ monitorEmissive, screenContent }: Props) {
       {/* Monitor — bezel */}
       <mesh position={[0, 2.5, -0.45]} castShadow>
         <boxGeometry args={[2.5, 1.5, 0.05]} />
-        <meshStandardMaterial color="#08080a" roughness={0.4} metalness={0.6} />
+        <meshStandardMaterial color="#0a0a0d" roughness={0.4} metalness={0.6} />
       </mesh>
-      {/* Monitor — screen (emissive) */}
-      <mesh position={[0, 2.5, -0.42]}>
+
+      {/* Monitor — emissive screen plane (provides bloom + light) */}
+      <mesh position={[0, 2.5, -0.421]}>
         <planeGeometry args={[2.38, 1.38]} />
         <meshStandardMaterial
           ref={screenMat}
-          color={screenTex ? "#ffffff" : "#000000"}
+          color={monitorEmissive > 0 ? "#1a1a22" : "#000000"}
           emissive="#ffffff"
           emissiveIntensity={monitorEmissive}
-          emissiveMap={screenTex}
-          map={screenTex}
           toneMapped={false}
         />
       </mesh>
+
+      {/* Monitor — DOM content rendered on top of screen */}
+      {showScreenContent && (
+        <Html
+          position={[0, 2.5, -0.418]}
+          transform
+          occlude={false}
+          distanceFactor={1.45}
+          zIndexRange={[0, 0]}
+          style={{
+            opacity: screenOpacity.current.v,
+            transition: "none",
+            pointerEvents: "none",
+          }}
+          className="cinematic-screen"
+        >
+          <div
+            style={{
+              width: 1280,
+              height: 800,
+              transform: "scale(0.001)", // hack: real scale set via distanceFactor
+            }}
+          />
+          {/* Drei <Html transform> already handles real scaling — render preview directly */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: 1280,
+              height: 800,
+              opacity: showScreenContent ? 1 : 0,
+              transition: "opacity 0.6s ease-out",
+              boxShadow: "0 0 80px rgba(255,255,255,0.15)",
+              pointerEvents: "none",
+            }}
+          >
+            <MonitorPreview />
+          </div>
+        </Html>
+      )}
 
       {/* MacBook base */}
       <mesh position={[0, 1.5, 0.4]} castShadow>
@@ -159,14 +146,32 @@ export default function Workspace({ monitorEmissive, screenContent }: Props) {
         <meshStandardMaterial color="#1c1c1f" roughness={0.4} metalness={0.7} />
       </mesh>
       {/* MacBook lid */}
-      <mesh position={[0, 1.93, -0.05]} rotation={[Math.PI / 2.5, 0, 0]} castShadow>
-        <boxGeometry args={[1.45, 0.04, 0.95]} />
-        <meshStandardMaterial color="#1c1c1f" roughness={0.4} metalness={0.7} />
-      </mesh>
-      {/* MacBook keyboard cutout (subtle glow) */}
+      <group position={[0, 1.93, -0.05]} rotation={[Math.PI / 2.5, 0, 0]}>
+        <mesh castShadow>
+          <boxGeometry args={[1.45, 0.04, 0.95]} />
+          <meshStandardMaterial color="#1c1c1f" roughness={0.4} metalness={0.7} />
+        </mesh>
+        {/* Laptop screen — glowing emissive front face */}
+        <mesh position={[0, 0.022, 0]}>
+          <planeGeometry args={[1.38, 0.86]} />
+          <meshStandardMaterial
+            ref={laptopScreenMat}
+            color={monitorEmissive > 0 ? "#1a1a22" : "#000000"}
+            emissive="#ffffff"
+            emissiveIntensity={monitorEmissive * 0.65}
+            toneMapped={false}
+          />
+        </mesh>
+      </group>
+      {/* MacBook keyboard glow */}
       <mesh position={[0, 1.525, 0.55]}>
         <planeGeometry args={[1.15, 0.55]} />
-        <meshStandardMaterial color="#0a0a0c" emissive="#ffffff" emissiveIntensity={monitorEmissive * 0.15} toneMapped={false} />
+        <meshStandardMaterial
+          color="#0a0a0c"
+          emissive="#ffffff"
+          emissiveIntensity={monitorEmissive * 0.18}
+          toneMapped={false}
+        />
       </mesh>
 
       {/* External keyboard */}
@@ -205,22 +210,19 @@ export default function Workspace({ monitorEmissive, screenContent }: Props) {
         <meshStandardMaterial color="#1f2823" roughness={0.9} />
       </mesh>
 
-      {/* Chair seat */}
+      {/* Chair */}
       <mesh position={[0, 0.85, 1.7]} castShadow receiveShadow>
         <boxGeometry args={[0.9, 0.1, 0.9]} />
         <meshStandardMaterial color="#0c0d11" roughness={0.6} metalness={0.3} />
       </mesh>
-      {/* Chair backrest */}
       <mesh position={[0, 1.45, 2.05]} castShadow>
         <boxGeometry args={[0.9, 1.25, 0.08]} />
         <meshStandardMaterial color="#0c0d11" roughness={0.6} metalness={0.3} />
       </mesh>
-      {/* Chair stem */}
       <mesh position={[0, 0.5, 1.7]} castShadow>
         <cylinderGeometry args={[0.04, 0.04, 0.7, 12]} />
         <meshStandardMaterial color="#0c0d11" roughness={0.5} metalness={0.5} />
       </mesh>
-      {/* Chair 5-star base */}
       {[0, 1, 2, 3, 4].map((i) => {
         const a = (i / 5) * Math.PI * 2;
         return (

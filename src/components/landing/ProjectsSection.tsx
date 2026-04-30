@@ -36,12 +36,7 @@ export default function ProjectsSection() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-4xl md:text-5xl lg:text-7xl text-white tracking-tight flex items-center gap-4 flex-wrap">
               <span>Selected</span>
-              <span 
-                className="text-white/40 font-light lowercase" 
-                style={{ fontFamily: "'Instrument Serif', serif", fontStyle: "italic" }}
-              >
-                works
-              </span>
+              <span className="text-white/40 font-light lowercase">works</span>
             </h2>
             <span className="hidden md:block text-white/40 text-sm tracking-widest uppercase">
               Portfolio
@@ -90,10 +85,9 @@ export default function ProjectsSection() {
                   </motion.span>
                   
                   {p.badge && (
-                    <div className="absolute top-4 right-4 liquid-glass rounded-full px-3 py-1 backdrop-blur-md border border-white/10">
+                    <div className="absolute top-4 right-4 liquid-glass rounded-full px-3 py-1 backdrop-blur-md border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)]">
                       <span 
-                        className="text-[10px] font-mono tracking-widest font-bold"
-                        style={{ color: p.badgeColor }}
+                        className="text-[10px] font-mono tracking-widest font-bold text-white/90"
                       >
                         {p.badge}
                       </span>
@@ -109,7 +103,7 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Content Body */}
-                <div className="p-6 md:p-8 flex flex-col flex-1 bg-black/20">
+                <div className="p-6 md:p-8 flex flex-col flex-1">
                   <div className="mt-auto">
                     <h3 className="text-white text-xl md:text-2xl mb-3 tracking-tight font-medium">
                       {p.title}
@@ -122,7 +116,7 @@ export default function ProjectsSection() {
                       {p.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/5 bg-white/5 text-white/70"
+                          className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm"
                         >
                           {tag}
                         </span>

@@ -1,7 +1,5 @@
-import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
-
-export const runtime = "edge";
+import { ollama } from "ollama-ai-provider";
 
 const SYSTEM = `You are an AI assistant on Ali Hassan's portfolio website.
 
@@ -41,16 +39,14 @@ Guidelines:
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-  // Keep last 6 messages to limit context tokens
+  // Keep last 6 messages to limit context
   const trimmed = messages.slice(-6);
 
   const result = streamText({
-    model: anthropic("claude-haiku-4-5-20251001"),
+    // ollama-ai-provider returns v1; ai v6 expects v2 — runtime is compatible
+    model: ollama("llama3") as unknown as Parameters<typeof streamText>[0]["model"],
     system: SYSTEM,
     messages: trimmed,
-    maxOutputTokens: 180,
   });
 
   return result.toUIMessageStreamResponse();

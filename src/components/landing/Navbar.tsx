@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { useCinematicTimeline } from "@/hooks/useCinematicTimeline";
 import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -31,31 +31,41 @@ const LINKS = [
 
 export default function Navbar() {
   const { isFinished } = useCinematicTimeline();
+  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+    setScrolled(latest > 50);
+  });
 
   return (
     <AnimatePresence>
       {isFinished && (
         <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ 
+            opacity: 1, 
+            y: hidden ? -100 : 0 
+          }}
+          exit={{ opacity: 0, y: -100 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed top-8 left-0 right-0 z-[100] px-6 flex justify-center"
         >
           <div 
             className={cn(
               "flex items-center justify-between w-full max-w-7xl h-16 px-6 md:px-8 rounded-full border border-white/10 bg-black/80 backdrop-blur-2xl transition-all duration-500",
-              scrolled ? "bg-black/90 shadow-[0_0_50px_rgba(0,0,0,0.8)] border-white/15 h-14" : ""
+              scrolled ? "bg-black/95 shadow-[0_0_50px_rgba(0,0,0,0.8)] border-white/15 h-14" : ""
             )}
           >
             {/* Left: Logo */}
-            <div className="flex items-center gap-1 group cursor-pointer">
+            <div className="flex items-center gap-1 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <span className="text-white font-bold text-lg tracking-tight">Ali</span>
               <span className="text-white/80 font-light text-lg tracking-tight">hassan</span>
             </div>
@@ -66,8 +76,7 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white/40 hover:text-white transition-colors"
-                  style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+                  className="px-4 py-1.5 uppercase tracking-[0.15em] text-white/40 hover:text-white transition-colors"
                 >
                   {link.name}
                 </a>
@@ -80,14 +89,14 @@ export default function Navbar() {
                 <a href="https://github.com/alihassanatthework" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
                   <GithubIcon />
                 </a>
-                <a href="https://linkedin.com/in/ali-hassan-at-the-work" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
+                <a href="https://www.linkedin.com/in/alihassan-developer/" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
                   <LinkedinIcon />
                 </a>
               </div>
               
               <a 
-                href="/Ali-hassan-Resume.pdf" 
-                download
+                href="/Ali_Hassan_Resume.pdf" 
+                download="Ali_Hassan_Resume.pdf"
                 className="flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors"
               >
                 <Download className="w-3 h-3" />

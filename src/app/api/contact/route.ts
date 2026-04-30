@@ -1,26 +1,41 @@
 import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-  const { name, email, budget, message } = await req.json();
+  try {
+    const { name, email, budget, message, service } = await req.json();
 
-  if (!name || !email || !message) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
+    if (!name || !email || !message) {
+      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    }
 
-  // If RESEND_API_KEY is set, use Resend. Otherwise log and return success (dev mode).
-  if (process.env.RESEND_API_KEY) {
-    const { Resend } = await import("resend");
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    await resend.emails.send({
-      from: "portfolio@alihassan.dev",
-      to: process.env.CONTACT_EMAIL ?? "alihassan.at.the.work@gmail.com",
-      subject: `New inquiry from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nBudget: ${budget ?? "not specified"}\n\n${message}`,
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER || "alihassan.at.the.work@gmail.com",
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
     });
-  } else {
-    console.log("Contact form submission (no RESEND_API_KEY set):", { name, email, budget, message });
-  }
 
-  return NextResponse.json({ ok: true });
+    const mailOptions = {
+      from: process.env.GMAIL_USER || "alihassan.at.the.work@gmail.com",
+      to: process.env.CONTACT_EMAIL || "alihassan.at.the.work@gmail.com",
+      subject: `New Inquiry from ${name} - ${service || "General"}`,
+      text: `
+        Name: ${name}
+        Email: ${email}
+        Service: ${service || "Not specified"}
+        Budget: ${budget || "Not specified"}
+        
+        Message:
+        ${message}
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    return NextResponse.json({ ok: true });
+  } catch (error: any) {
+    console.error("GMAIL SEND ERROR:", error.message || error);
+    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+  }
 }

@@ -32,7 +32,7 @@ export default function AboutSection() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-7xl text-white leading-[1.1] tracking-tight"
           >
-            {cv.about.heading.split(" ")[0]} <span className="text-white/60 font-light" style={{ fontFamily: "'Instrument Serif', serif", fontStyle: "italic" }}>{cv.about.heading.split(" ").slice(1).join(" ")}</span>
+            {cv.about.heading.split(" ")[0]} <span className="text-white/60 font-light">{cv.about.heading.split(" ").slice(1).join(" ")}</span>
           </motion.h2>
 
           <div className="flex flex-col gap-6 pt-2">

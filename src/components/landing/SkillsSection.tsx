@@ -21,12 +21,7 @@ export default function SkillsSection() {
         >
           <h2 className="text-4xl md:text-5xl lg:text-7xl text-white tracking-tight flex items-center gap-4 flex-wrap">
             <span>Core</span>
-            <span 
-              className="text-white/40 font-light lowercase" 
-              style={{ fontFamily: "'Instrument Serif', serif", fontStyle: "italic" }}
-            >
-              competencies
-            </span>
+            <span className="text-white/40 font-light lowercase">competencies</span>
           </h2>
         </motion.div>
 
@@ -69,7 +64,7 @@ export default function SkillsSection() {
                   {skill.tags.map(tag => (
                     <span 
                       key={tag}
-                      className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/5 bg-white/5 text-white/70"
+                      className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm"
                     >
                       {tag}
                     </span>

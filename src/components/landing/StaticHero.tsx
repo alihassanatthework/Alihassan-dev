@@ -38,21 +38,20 @@ export default function StaticHero() {
           />
         </motion.div>
 
-        {/* Name — Playfair serif */}
+        {/* Name — Updated to Inter and standard sizes */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-6 text-5xl tracking-tight text-white md:text-7xl"
-          style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+          className="mb-6 tracking-tight text-white"
         >
           {cv.name.split(" ")[0]}{" "}
-          <span className="font-light italic text-zinc-400">
+          <span className="font-light text-zinc-400">
             {cv.name.split(" ").slice(1).join(" ")}
           </span>
         </motion.h1>
 
-        {/* Roles — staggered fade */}
+        {/* Roles — standard body text */}
         <motion.div
           initial="hidden"
           animate="show"
@@ -60,8 +59,7 @@ export default function StaticHero() {
             hidden: {},
             show: { transition: { staggerChildren: 0.12, delayChildren: 0.5 } },
           }}
-          className="flex flex-col items-center gap-4 text-xs uppercase tracking-[0.25em] text-zinc-500 md:flex-row md:gap-8 md:text-sm"
-          style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+          className="flex flex-col items-center gap-4 text-zinc-500 md:flex-row md:gap-8 body-small uppercase tracking-[0.2em]"
         >
           {roles.map((role, i) => (
             <motion.span
@@ -84,7 +82,7 @@ export default function StaticHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className="mt-8 max-w-md text-sm leading-relaxed text-zinc-500"
+          className="mt-8 max-w-md text-zinc-500 body-small"
         >
           Crafting full-stack experiences. Designing intelligent systems. Shipping production.
         </motion.p>
@@ -95,8 +93,7 @@ export default function StaticHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
           onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" })}
-          className="mt-12 rounded-full bg-white px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-black transition hover:bg-zinc-200"
-          style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+          className="mt-12 rounded-full bg-white px-8 py-3 text-black transition hover:bg-zinc-200 uppercase tracking-[0.1em]"
         >
           Explore Universe
         </motion.button>
@@ -107,8 +104,7 @@ export default function StaticHero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.4 }}
-        className="absolute bottom-12 left-1/2 flex -translate-x-1/2 items-center gap-12 text-[10px] uppercase tracking-[0.3em] text-zinc-600"
-        style={{ fontFamily: "var(--font-jetbrains), monospace" }}
+        className="absolute bottom-12 left-1/2 flex -translate-x-1/2 items-center gap-12 caption uppercase tracking-[0.2em] text-zinc-600"
       >
         <a href={cv.github} target="_blank" rel="noreferrer" className="transition-colors hover:text-white">GitHub</a>
         <a href={cv.linkedin} target="_blank" rel="noreferrer" className="transition-colors hover:text-white">LinkedIn</a>

@@ -57,12 +57,7 @@ export default function ContactSection() {
         >
           <h2 className="text-4xl md:text-5xl lg:text-7xl text-white tracking-tight flex gap-4 flex-wrap">
             <span>Let&apos;s build</span>
-            <span 
-              className="text-white/40 font-light lowercase" 
-              style={{ fontFamily: "'Instrument Serif', serif", fontStyle: "italic" }}
-            >
-              something.
-            </span>
+            <span className="text-white/40 font-light lowercase">something.</span>
           </h2>
         </motion.div>
 

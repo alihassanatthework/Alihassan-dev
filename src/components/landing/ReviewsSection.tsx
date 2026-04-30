@@ -17,16 +17,11 @@ export default function ReviewsSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.7 }}
-          className="mb-12 md:mb-16 text-center"
+          className="mb-12 md:mb-16 text-left"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-7xl text-white tracking-tight flex justify-center gap-4 flex-wrap">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl text-white tracking-tight flex gap-4 flex-wrap">
             <span>Client</span>
-            <span 
-              className="text-white/40 font-light lowercase" 
-              style={{ fontFamily: "'Instrument Serif', serif", fontStyle: "italic" }}
-            >
-              Feedback
-            </span>
+            <span className="text-white/40 font-light lowercase">Feedback</span>
           </h2>
         </motion.div>
 

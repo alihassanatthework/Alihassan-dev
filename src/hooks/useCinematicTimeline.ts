@@ -13,40 +13,54 @@ const SCHEDULE: Array<{ at: number; phase: CinematicPhase }> = [
 ];
 const TOTAL_DURATION = 12000;
 
+let GLOBAL_EPOCH = 0;
+
 export function useCinematicTimeline() {
   const [phase, setPhase] = useState<CinematicPhase>("entry");
   const [isFinished, setIsFinished] = useState(false);
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const finished = useRef(false);
+  const epochRef = useRef(0);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
-    finished.current = false;
+    // Reset state on every fresh mount (handles HMR + StrictMode)
+    GLOBAL_EPOCH += 1;
+    const myEpoch = GLOBAL_EPOCH;
+    epochRef.current = myEpoch;
 
-    SCHEDULE.forEach(({ at, phase }) => {
+    setPhase("entry");
+    setIsFinished(false);
+
+    const myTimers: ReturnType<typeof setTimeout>[] = [];
+
+    SCHEDULE.forEach(({ at, phase: p }) => {
       const t = setTimeout(() => {
-        if (finished.current) return;
-        setPhase(phase);
+        if (epochRef.current !== myEpoch) return; // stale
+        setPhase(p);
       }, at);
-      timers.current.push(t);
+      myTimers.push(t);
     });
 
     const finishTimer = setTimeout(() => {
-      finished.current = true;
+      if (epochRef.current !== myEpoch) return; // stale
       setPhase("static");
       setIsFinished(true);
     }, TOTAL_DURATION);
-    timers.current.push(finishTimer);
+    myTimers.push(finishTimer);
+
+    timersRef.current = myTimers;
 
     return () => {
-      timers.current.forEach(clearTimeout);
-      timers.current = [];
+      // Invalidate any in-flight timer callbacks from this mount
+      epochRef.current = -1;
+      myTimers.forEach(clearTimeout);
+      timersRef.current = [];
     };
   }, []);
 
   const skip = useCallback(() => {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-    finished.current = true;
+    epochRef.current = -1; // block stale timers
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
     setPhase("static");
     setIsFinished(true);
   }, []);
