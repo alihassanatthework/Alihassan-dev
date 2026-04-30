@@ -35,8 +35,7 @@ export default function ReviewsSection() {
               className="liquid-glass rounded-3xl p-8 flex flex-col relative group"
             >
               <div 
-                className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 blur-3xl pointer-events-none transition-opacity group-hover:opacity-40"
-                style={{ backgroundColor: review.color }}
+                className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white opacity-0 blur-3xl pointer-events-none transition-opacity group-hover:opacity-10"
               />
 
               <div className="mb-8 flex-1">
@@ -48,8 +47,7 @@ export default function ReviewsSection() {
 
               <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/10">
                 <div 
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold font-mono"
-                  style={{ backgroundColor: `${review.color}20`, color: review.color, border: `1px solid ${review.color}40` }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold font-mono bg-white/5 text-white/60 border border-white/10 group-hover:bg-white group-hover:text-black transition-all"
                 >
                   {review.initials}
                 </div>

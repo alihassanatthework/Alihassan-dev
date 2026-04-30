@@ -5,13 +5,13 @@ import { useEffect, useRef, useState, useCallback } from "react";
 export type CinematicPhase = "entry" | "typing" | "reveal" | "text" | "transition" | "static";
 
 const SCHEDULE: Array<{ at: number; phase: CinematicPhase }> = [
-  { at: 0,     phase: "entry" },
-  { at: 3000,  phase: "typing" },
-  { at: 6000,  phase: "reveal" },
-  { at: 8000,  phase: "text" },
-  { at: 10000, phase: "transition" },
+  { at: 0,    phase: "entry" },
+  { at: 1800, phase: "typing" },
+  { at: 3400, phase: "reveal" },
+  { at: 4600, phase: "text" },
+  { at: 5800, phase: "transition" },
 ];
-const TOTAL_DURATION = 12000;
+const TOTAL_DURATION = 7000;
 
 let GLOBAL_EPOCH = 0;
 
