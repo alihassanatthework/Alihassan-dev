@@ -7,8 +7,8 @@ import { ArrowUpRight } from "lucide-react";
 
 const FILTERS = [
   { id: "all", label: "ALL" },
-  { id: "fullstack", label: "FULL-STACK" },
-  { id: "ml", label: "ML / AI" },
+  { id: "fullstack", label: "FULL STACK" },
+  { id: "ml", label: "ML AI" },
   { id: "vision", label: "VISION" },
   { id: "freelance", label: "FREELANCE" },
 ];
@@ -63,69 +63,103 @@ export default function ProjectsSection() {
 
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <AnimatePresence mode="popLayout">
-            {visibleProjects.map((p) => (
-              <motion.div
-                key={p.slug}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                className="liquid-glass rounded-3xl overflow-hidden group flex flex-col cursor-pointer"
-              >
-                {/* Visual Header */}
-                <div 
-                  className="relative h-48 md:h-64 flex items-center justify-center overflow-hidden"
-                  style={{ background: p.bgGradient }}
+            {visibleProjects.map((p) => {
+              const hasLink = (p as any).link;
+              const CardWrapper = hasLink ? "a" : "div";
+              const wrapperProps = hasLink 
+                ? { href: (p as any).link, target: "_blank", rel: "noopener noreferrer" } 
+                : {};
+
+              return (
+                <motion.div
+                  key={p.slug}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <motion.span
-                    className="font-mono text-4xl md:text-5xl font-bold text-white/20 transition-transform duration-700 group-hover:scale-110 group-hover:text-white/30"
+                  <CardWrapper
+                    {...wrapperProps}
+                    className="liquid-glass rounded-3xl overflow-hidden group flex flex-col h-full cursor-pointer border border-white/5 hover:border-white/20 transition-all duration-500"
                   >
-                    {p.abbr}
-                  </motion.span>
-                  
-                  {p.badge && (
-                    <div className="absolute top-4 right-4 liquid-glass rounded-full px-3 py-1 backdrop-blur-md border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-                      <span 
-                        className="text-[10px] font-mono tracking-widest font-bold text-white/90"
-                      >
-                        {p.badge}
-                      </span>
-                    </div>
-                  )}
+                    {/* Visual Header */}
+                    <div 
+                      className="relative h-48 md:h-64 flex items-center justify-center overflow-hidden"
+                      style={{ background: p.bgGradient || "#000000" }}
+                    >
+                      {/* Radial Texture Glow (only for non-logo projects) */}
+                      {!(p as any).logo && (
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.08)_0%,_transparent_65%)] pointer-events-none z-0" />
+                      )}
 
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="liquid-glass rounded-full p-4 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <ArrowUpRight className="w-6 h-6" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content Body */}
-                <div className="p-6 md:p-8 flex flex-col flex-1">
-                  <div className="mt-auto">
-                    <h3 className="text-white text-xl md:text-2xl mb-3 tracking-tight font-medium">
-                      {p.title}
-                    </h3>
-                    <p className="text-white/50 text-sm leading-relaxed mb-6">
-                      {p.desc}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {p.tags.map((tag) => (
+                      {/* Logo or Text Abbreviation */}
+                      {(p as any).logo ? (
+                        <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center z-10 p-4">
+                          <img 
+                            src={(p as any).logo} 
+                            alt={`${p.title} logo`}
+                            className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                            style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.2))" }}
+                          />
+                        </div>
+                      ) : (
                         <span
-                          key={tag}
-                          className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm"
+                          className="relative z-10 font-mono text-4xl md:text-5xl font-bold text-white/20 transition-transform duration-700 group-hover:scale-110 group-hover:text-white/30"
                         >
-                          {tag}
+                          {p.abbr}
                         </span>
-                      ))}
+                      )}
+                      
+                      {p.badge && (
+                        <div className="absolute top-4 right-4 liquid-glass rounded-full px-3 py-1 backdrop-blur-md border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)] z-20">
+                          <span 
+                            className="text-[10px] font-mono tracking-widest font-bold text-white/90"
+                          >
+                            {p.badge}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30">
+                        <div className="liquid-glass rounded-full p-4 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                          <ArrowUpRight className="w-6 h-6" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+
+                    {/* Content Body */}
+                    <div className="p-6 md:p-8 flex flex-col flex-1">
+                      <div className="mt-auto">
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-white text-xl md:text-2xl tracking-tight font-medium">
+                            {p.title}
+                          </h3>
+                          {hasLink && (
+                            <span className="text-white/20 text-[10px] font-mono tracking-tighter uppercase">Live Site</span>
+                          )}
+                        </div>
+                        <p className="text-white/50 text-sm leading-relaxed mb-6">
+                          {p.desc}
+                        </p>
+                        
+                        <div className="flex flex-wrap gap-2">
+                          {p.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </CardWrapper>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       </div>
