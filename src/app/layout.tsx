@@ -40,7 +40,7 @@ const jsonLd = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID ?? "G-1CEP7464SF";
+  const gaId = process.env.NEXT_PUBLIC_GA_ID ?? "G-6879VC7QMY";
 
   return (
     <html lang="en" className={`${inter.variable}`} suppressHydrationWarning>
