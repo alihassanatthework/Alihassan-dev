@@ -9,14 +9,13 @@ import type { CinematicPhase } from "@/hooks/useCinematicTimeline";
 import Character from "./Character";
 import Workspace from "./Workspace";
 
-// Camera path: WIDE → smooth zoom toward monitor screen → frame fills screen
+// Camera holds a stable medium shot — workspace always framed.
+// No fly-into-screen. Slide-up overlay handles the takeover.
 const PHASE_CAMERA = {
-  entry:      { x: 7.5, y: 4.2, z: 8.5,  fov: 42, look: [0, 1.4, 0]    as [number, number, number] },
-  typing:     { x: 4.2, y: 2.8, z: 5.0,  fov: 36, look: [0, 1.8, -0.2] as [number, number, number] },
-  reveal:     { x: 1.6, y: 2.65, z: 2.8, fov: 30, look: [0, 2.45, -0.42] as [number, number, number] },
-  text:       { x: 0.5, y: 2.55, z: 1.4, fov: 24, look: [0, 2.5, -0.42] as [number, number, number] },
-  transition: { x: 0,   y: 2.5, z: 0.05, fov: 18, look: [0, 2.5, -0.42] as [number, number, number] },
-  static:     { x: 0,   y: 2.5, z: -0.3, fov: 14, look: [0, 2.5, -0.42] as [number, number, number] },
+  entry:      { x: 7.0, y: 4.0, z: 8.0, fov: 42, look: [0, 1.4, 0]    as [number, number, number] },
+  typing:     { x: 4.5, y: 3.0, z: 5.5, fov: 36, look: [0, 1.9, -0.2] as [number, number, number] },
+  transition: { x: 3.8, y: 2.9, z: 4.8, fov: 34, look: [0, 2.1, -0.3] as [number, number, number] },
+  static:     { x: 3.8, y: 2.9, z: 4.8, fov: 34, look: [0, 2.1, -0.3] as [number, number, number] },
 };
 
 export default function DeveloperScene({ phase }: { phase: CinematicPhase }) {
@@ -26,22 +25,13 @@ export default function DeveloperScene({ phase }: { phase: CinematicPhase }) {
   const mouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const p = PHASE_CAMERA[phase];
-    const dur =
-      phase === "entry" ? 1.8 :
-      phase === "typing" ? 1.4 :
-      phase === "reveal" ? 1.1 :
-      phase === "text" ? 1.0 :
-      phase === "transition" ? 1.1 :
-      0.6;
+    const p = PHASE_CAMERA[phase as keyof typeof PHASE_CAMERA] ?? PHASE_CAMERA.typing;
+    const dur = phase === "entry" ? 1.8 : phase === "typing" ? 1.4 : 1.0;
 
     gsap.to(camera.position, {
       x: p.x, y: p.y, z: p.z,
       duration: dur,
-      ease:
-        phase === "entry" ? "power2.out" :
-        phase === "transition" ? "power2.in" :
-        "power3.inOut",
+      ease: phase === "entry" ? "power2.out" : "power3.inOut",
     });
     const cam = camera as THREE.PerspectiveCamera;
     gsap.to(cam, {
@@ -69,96 +59,60 @@ export default function DeveloperScene({ phase }: { phase: CinematicPhase }) {
     lookAt.current.lerp(targetLookAt.current, Math.min(delta * 4, 1));
     camera.lookAt(lookAt.current);
 
-    const intensity =
-      phase === "entry" || phase === "typing" ? 0.15 :
-      phase === "reveal" ? 0.05 :
-      0.0;
-
-    if (intensity > 0) {
-      const targetX = PHASE_CAMERA[phase].x + mouse.current.x * intensity;
-      const targetY = PHASE_CAMERA[phase].y - mouse.current.y * intensity;
-      camera.position.x += (targetX - camera.position.x) * 0.04;
-      camera.position.y += (targetY - camera.position.y) * 0.04;
-    }
+    const intensity = phase === "entry" ? 0.18 : 0.1;
+    const target = PHASE_CAMERA[phase as keyof typeof PHASE_CAMERA] ?? PHASE_CAMERA.typing;
+    const targetX = target.x + mouse.current.x * intensity;
+    const targetY = target.y - mouse.current.y * intensity;
+    camera.position.x += (targetX - camera.position.x) * 0.04;
+    camera.position.y += (targetY - camera.position.y) * 0.04;
   });
 
-  // Screen always shows preview — even during entry, dim version is up
-  // so we never see a white/blank screen flash.
-  const screenOn = true;
+  // Brightness: dim during entry, full during typing+
   const monitorBrightness =
     phase === "entry" ? 0.4 :
-    phase === "typing" ? 1.0 :
-    phase === "reveal" || phase === "text" ? 1.15 :
-    phase === "transition" ? 1.3 :
+    phase === "typing" ? 1.1 :
     1.0;
-
-  // Wall fill — bright soft fill so wall is uniform, no harsh shadow
-  const wallFill = phase === "entry" ? 1.0 : 0.6;
 
   return (
     <>
-      {/* Ambient — generous so room is readable */}
+      {/* Ambient + soft fill */}
       <ambientLight intensity={0.6} color="#dde2ea" />
-
-      {/* Soft area-style fill positioned behind/above to bathe wall uniformly */}
       <hemisphereLight args={["#cbd5e1", "#0a0b10", 0.5]} />
 
-      {/* Front fill that lights the desk + faces (no shadow, soft) */}
-      <pointLight
-        position={[3, 4, 6]}
-        intensity={1.4}
-        color="#f0f4fa"
-        distance={20}
-        decay={1.2}
-      />
+      {/* Front fill */}
+      <pointLight position={[3, 4, 6]} intensity={1.4} color="#f0f4fa" distance={20} decay={1.2} />
 
-      {/* Wall wash light — keeps backdrop uniform */}
-      <pointLight
-        position={[-6, 5, -3]}
-        intensity={wallFill * 1.2}
-        color="#a8b0bc"
-        distance={18}
-        decay={1.5}
-      />
-      <pointLight
-        position={[6, 5, -3]}
-        intensity={wallFill * 1.2}
-        color="#a8b0bc"
-        distance={18}
-        decay={1.5}
-      />
+      {/* Wall washes */}
+      <pointLight position={[-6, 5, -3]} intensity={0.9} color="#a8b0bc" distance={18} decay={1.5} />
+      <pointLight position={[6, 5, -3]} intensity={0.9} color="#a8b0bc" distance={18} decay={1.5} />
 
-      {/* Monitor key light — face illumination during typing */}
+      {/* Monitor key + face wash — reduced so the screen isn't a hotspot */}
       <pointLight
         position={[0, 2.4, 0.6]}
-        intensity={monitorBrightness * 6}
+        intensity={monitorBrightness * 2.5}
         color="#ffffff"
         distance={6}
         decay={2}
       />
-      {/* Wider monitor wash for face */}
       <pointLight
         position={[0, 2.4, 1.6]}
-        intensity={monitorBrightness * 3}
+        intensity={monitorBrightness * 1.5}
         color="#cbd5e1"
         distance={7}
         decay={2}
       />
 
-      <Workspace
-        monitorBrightness={monitorBrightness}
-        showScreenContent={screenOn}
-      />
+      <Workspace phase={phase} monitorBrightness={monitorBrightness} />
       <Character phase={phase} />
 
       <EffectComposer multisampling={0}>
         <Bloom
-          intensity={0.7}
-          luminanceThreshold={0.6}
+          intensity={0.35}
+          luminanceThreshold={0.85}
           luminanceSmoothing={0.4}
           mipmapBlur
         />
-        <Vignette eskil={false} offset={0.18} darkness={0.6} />
+        <Vignette eskil={false} offset={0.18} darkness={0.5} />
       </EffectComposer>
     </>
   );

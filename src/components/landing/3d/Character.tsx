@@ -30,7 +30,7 @@ export default function Character({ phase }: { phase: CinematicPhase }) {
         { y: Math.PI / 2 },
         { y: Math.PI, duration: 2.6, ease: "power2.inOut" }
       );
-    } else if (phase === "typing" || phase === "reveal") {
+    } else if (phase === "typing") {
       gsap.to(root.current.position, { x: 0, y: -0.18, z: 1.7, duration: 0.6 });
       gsap.to(root.current.rotation, { y: Math.PI, duration: 0.6 });
     } else {
@@ -55,7 +55,7 @@ export default function Character({ phase }: { phase: CinematicPhase }) {
       if (leftArm.current) leftArm.current.rotation.x = -Math.sin(t * 6) * 0.3;
       if (rightArm.current) rightArm.current.rotation.x = Math.sin(t * 6) * 0.3;
       if (torso.current) torso.current.position.y = Math.abs(Math.sin(t * 6)) * 0.04;
-    } else if (phase === "typing" || phase === "reveal") {
+    } else if (phase === "typing") {
       if (leftArm.current) {
         leftArm.current.rotation.x = -1.4 + Math.sin(t * 14) * 0.06;
         leftArm.current.rotation.z = 0.15;
@@ -150,19 +150,31 @@ export default function Character({ phase }: { phase: CinematicPhase }) {
           </mesh>
         </group>
 
-        <mesh position={[0, 1.42, 0]} castShadow>
-          <cylinderGeometry args={[0.07, 0.08, 0.1, 12]} />
+        {/* Neck */}
+        <mesh position={[0, 1.40, 0]} castShadow>
+          <cylinderGeometry args={[0.06, 0.07, 0.08, 16]} />
           <meshStandardMaterial color={skin} roughness={0.6} />
         </mesh>
 
-        <group ref={head} position={[0, 1.55, 0]}>
-          <mesh castShadow>
-            <sphereGeometry args={[0.16, 24, 20]} />
+        {/* Head — slightly egg-shaped (taller than wide) for natural proportions */}
+        <group ref={head} position={[0, 1.56, 0]}>
+          <mesh castShadow scale={[0.95, 1.1, 1]}>
+            <sphereGeometry args={[0.13, 32, 28]} />
             <meshStandardMaterial color={skin} roughness={0.55} />
           </mesh>
-          <mesh position={[0, 0.06, -0.01]} scale={[1.05, 0.7, 1.05]} castShadow>
-            <sphereGeometry args={[0.16, 24, 20, 0, Math.PI * 2, 0, Math.PI / 2]} />
-            <meshStandardMaterial color={hair} roughness={0.85} />
+          {/* Hair — full helmet covering top + back, not a flat saucer */}
+          <mesh position={[0, 0.025, -0.005]} scale={[1.0, 1.05, 1.05]} castShadow>
+            <sphereGeometry args={[0.135, 32, 28, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
+            <meshStandardMaterial color={hair} roughness={0.9} />
+          </mesh>
+          {/* Subtle ear hint */}
+          <mesh position={[0.115, -0.01, 0]} castShadow>
+            <sphereGeometry args={[0.022, 12, 10]} />
+            <meshStandardMaterial color={skin} roughness={0.6} />
+          </mesh>
+          <mesh position={[-0.115, -0.01, 0]} castShadow>
+            <sphereGeometry args={[0.022, 12, 10]} />
+            <meshStandardMaterial color={skin} roughness={0.6} />
           </mesh>
         </group>
       </group>

@@ -35,7 +35,7 @@ const TECH_LINKS: Record<string, string> = {
   "MongoDB": "https://www.mongodb.com",
   "SQLite": "https://www.sqlite.org",
   "Git": "https://git-scm.com",
-  "Agile / Scrum": "https://www.scrum.org",
+  "Agile Scrum": "https://www.scrum.org",
   "SDLC": "https://en.wikipedia.org/wiki/Systems_development_life_cycle",
   "SPM": "https://en.wikipedia.org/wiki/Software_project_management",
   "SQE": "https://en.wikipedia.org/wiki/Software_quality_assurance",
@@ -102,14 +102,25 @@ export default function SkillsSection() {
 
                 <div className="mt-auto pt-8 border-t border-white/10 min-h-[140px]">
                   <div className="flex flex-wrap gap-2">
-                    {skill.tags.map(tag => (
-                      <span 
-                        key={tag}
-                        className="px-2.5 py-1.5 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm flex items-center gap-1.5 transition-colors"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    {skill.tags.map(tag => {
+                      const link = TECH_LINKS[tag];
+                      return (
+                        <a 
+                          key={tag}
+                          href={link || "#"}
+                          target={link ? "_blank" : undefined}
+                          rel={link ? "noopener noreferrer" : undefined}
+                          onClick={(e) => {
+                            if (link) {
+                              e.stopPropagation();
+                            }
+                          }}
+                          className="px-2.5 py-1.5 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm flex items-center gap-1.5 transition-all hover:bg-white/10 hover:text-white hover:border-white/30 active:scale-95"
+                        >
+                          {tag}
+                        </a>
+                      );
+                    })}
                   </div>
                   <div className="mt-4 text-[10px] text-white/20 uppercase tracking-[0.2em] font-bold group-hover:text-white transition-colors">
                     Click to view intelligence →
@@ -197,7 +208,6 @@ export default function SkillsSection() {
                   </h4>
                   <div className="flex flex-col gap-4 flex-1">
                     {selectedSkill.projects?.map((projName) => {
-                      // Attempt to match project name to cv.projects
                       const proj = cv.projects.find(p => p.title.toLowerCase().includes(projName.toLowerCase()) || projName.includes(p.abbr));
                       
                       return (

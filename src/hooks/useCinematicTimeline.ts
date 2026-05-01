@@ -2,14 +2,12 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
-export type CinematicPhase = "entry" | "typing" | "reveal" | "text" | "transition" | "static";
+export type CinematicPhase = "entry" | "typing" | "transition" | "static";
 
 const SCHEDULE: Array<{ at: number; phase: CinematicPhase }> = [
-  { at: 0,    phase: "entry" },
-  { at: 1800, phase: "typing" },
-  { at: 3400, phase: "reveal" },
-  { at: 4600, phase: "text" },
-  { at: 5800, phase: "transition" },
+  { at: 0,    phase: "entry" },     // walk in (0–2s)
+  { at: 2000, phase: "typing" },    // type domain (2–5s)
+  { at: 5000, phase: "transition" },// slide-up (5–7s)
 ];
 const TOTAL_DURATION = 7000;
 
@@ -22,7 +20,6 @@ export function useCinematicTimeline() {
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
-    // Reset state on every fresh mount (handles HMR + StrictMode)
     GLOBAL_EPOCH += 1;
     const myEpoch = GLOBAL_EPOCH;
     epochRef.current = myEpoch;
@@ -34,14 +31,14 @@ export function useCinematicTimeline() {
 
     SCHEDULE.forEach(({ at, phase: p }) => {
       const t = setTimeout(() => {
-        if (epochRef.current !== myEpoch) return; // stale
+        if (epochRef.current !== myEpoch) return;
         setPhase(p);
       }, at);
       myTimers.push(t);
     });
 
     const finishTimer = setTimeout(() => {
-      if (epochRef.current !== myEpoch) return; // stale
+      if (epochRef.current !== myEpoch) return;
       setPhase("static");
       setIsFinished(true);
     }, TOTAL_DURATION);
@@ -50,7 +47,6 @@ export function useCinematicTimeline() {
     timersRef.current = myTimers;
 
     return () => {
-      // Invalidate any in-flight timer callbacks from this mount
       epochRef.current = -1;
       myTimers.forEach(clearTimeout);
       timersRef.current = [];
@@ -58,7 +54,7 @@ export function useCinematicTimeline() {
   }, []);
 
   const skip = useCallback(() => {
-    epochRef.current = -1; // block stale timers
+    epochRef.current = -1;
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
     setPhase("static");

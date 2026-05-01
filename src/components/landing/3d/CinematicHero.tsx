@@ -21,26 +21,26 @@ export default function CinematicHero() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  // Unmount Canvas after slide-up has fully landed + a beat
   useEffect(() => {
     if (!isFinished) return;
-    const t = setTimeout(() => setUnmountCanvas(true), 1400);
+    const t = setTimeout(() => setUnmountCanvas(true), 800);
     return () => clearTimeout(t);
   }, [isFinished]);
 
   if (!hasHydrated) return <div className="h-screen w-full bg-black" />;
 
+  // Slide-up triggers as soon as transition phase starts (or on skip)
+  const slideUp = phase === "transition" || phase === "static" || isFinished;
+
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
+      {/* 3D scene — never unmounts mid-cinematic */}
       {!unmountCanvas && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: isFinished ? 0 : 1 }}
-          transition={{ duration: 1.2, ease: [0.45, 0, 0.15, 1] }}
-          className="absolute inset-0"
-        >
+        <div className="absolute inset-0 z-0">
           <Canvas
             shadows
-            camera={{ position: [7.5, 4.2, 8.5], fov: 42 }}
+            camera={{ position: [7, 4, 8], fov: 42 }}
             gl={{
               antialias: !isMobile,
               alpha: true,
@@ -53,25 +53,26 @@ export default function CinematicHero() {
               <DeveloperScene phase={phase} />
             </Suspense>
           </Canvas>
-
-          {/* Soft inner glow vignette */}
-          <div className="pointer-events-none absolute inset-0 z-20 shadow-[inset_0_0_180px_rgba(0,0,0,0.55)]" />
-        </motion.div>
+          <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_180px_rgba(0,0,0,0.55)]" />
+        </div>
       )}
 
-      {/* Static hero crossfades in — content matches preview pixel-for-pixel */}
+      {/* Slide-up overlay — preview rises from bottom, covers viewport, becomes the real site */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isFinished ? 1 : 0 }}
-        transition={{ duration: 1.0, delay: isFinished ? 0.2 : 0, ease: "easeOut" }}
-        className="absolute inset-0 z-10"
-        style={{ pointerEvents: isFinished ? "auto" : "none" }}
+        initial={{ y: "100%" }}
+        animate={{ y: slideUp ? "0%" : "100%" }}
+        transition={{
+          duration: 1.4,
+          ease: [0.32, 0.72, 0, 1], // smooth deceleration curve
+        }}
+        className="absolute inset-0 z-20 bg-black"
+        style={{ pointerEvents: slideUp ? "auto" : "none" }}
       >
         <StaticHero />
       </motion.div>
 
       {/* Skip Intro */}
-      {!isFinished && (
+      {!isFinished && phase !== "transition" && (
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
