@@ -24,7 +24,6 @@ const LINKS = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
   { name: "Portfolio", href: "#projects" },
-  { name: "Services", href: "#services" },
   { name: "Reviews", href: "#reviews" },
   { name: "Contact", href: "#contact" },
 ];
@@ -60,7 +59,7 @@ export default function Navbar() {
         >
           <div 
             className={cn(
-              "flex items-center justify-between w-full max-w-7xl h-16 px-6 md:px-8 rounded-full border border-white/10 bg-black/80 backdrop-blur-2xl transition-all duration-500",
+              "flex items-center justify-between w-full max-w-7xl h-16 px-6 md:px-10 rounded-full border border-white/10 bg-black/80 backdrop-blur-2xl transition-all duration-500",
               scrolled ? "bg-black/95 shadow-[0_0_50px_rgba(0,0,0,0.8)] border-white/15 h-14" : ""
             )}
           >
@@ -74,12 +73,12 @@ export default function Navbar() {
             </div>
 
             {/* Center: Links */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-2">
               {LINKS.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="px-4 py-1.5 uppercase tracking-[0.15em] text-white/40 hover:text-white transition-colors"
+                  className="px-4 py-1.5 uppercase tracking-[0.15em] text-[10px] text-white/40 hover:text-white transition-all hover:bg-white/5 rounded-full"
                 >
                   {link.name}
                 </a>
@@ -87,8 +86,8 @@ export default function Navbar() {
             </div>
 
             {/* Right: Socials + CV */}
-            <div className="flex items-center gap-6">
-              <div className="hidden md:flex items-center gap-4 border-r border-white/10 pr-6">
+            <div className="flex items-center gap-4 md:gap-8">
+              <div className="hidden md:flex items-center gap-5 border-r border-white/10 pr-6">
                 <a href="https://github.com/alihassanatthework" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
                   <GithubIcon />
                 </a>
@@ -100,10 +99,10 @@ export default function Navbar() {
               <a 
                 href="/Ali_Hassan_Resume.pdf" 
                 download="Ali_Hassan_Resume.pdf"
-                className="flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-200 transition-colors"
+                className="flex items-center gap-2 px-6 py-2 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-200 transition-all active:scale-95"
               >
                 <Download className="w-3 h-3" />
-                <span className="hidden sm:inline">Download CV</span>
+                <span className="hidden sm:inline">Resume</span>
               </a>
             </div>
           </div>
