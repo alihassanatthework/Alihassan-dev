@@ -14,6 +14,41 @@ const FILTERS = [
   { id: "freelance", label: "FREELANCE" },
 ];
 
+const TECH_LINKS: Record<string, string> = {
+  "React": "https://react.dev",
+  "TypeScript": "https://www.typescriptlang.org",
+  "Tailwind CSS": "https://tailwindcss.com",
+  "Bootstrap": "https://getbootstrap.com",
+  "HTML5": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+  "CSS3": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+  "Node.js": "https://nodejs.org",
+  "Express": "https://expressjs.com",
+  "Django": "https://www.djangoproject.com",
+  "DRF": "https://www.django-rest-framework.org",
+  "Spring Boot": "https://spring.io/projects/spring-boot",
+  "Flask": "https://flask.palletsprojects.com",
+  "Scikit-learn": "https://scikit-learn.org",
+  "XGBoost": "https://xgboost.readthedocs.io",
+  "Pandas": "https://pandas.pydata.org",
+  "NumPy": "https://numpy.org",
+  "spaCy": "https://spacy.io",
+  "Hugging Face": "https://huggingface.co",
+  "YOLOv8": "https://docs.ultralytics.com",
+  "U-Net": "https://arxiv.org/abs/1505.04597",
+  "EfficientNet-B4": "https://arxiv.org/abs/1905.11946",
+  "MediaPipe": "https://mediapipe.dev",
+  "OpenCV": "https://opencv.org",
+  "CNNs": "https://en.wikipedia.org/wiki/Convolutional_neural_network",
+  "MySQL": "https://www.mysql.com",
+  "PostgreSQL": "https://www.postgresql.org",
+  "MongoDB": "https://www.mongodb.com",
+  "SQLite": "https://www.sqlite.org",
+  "Amazon SP API": "https://developer-docs.amazon.com/sp-api",
+  "MERN": "https://www.mongodb.com/mern-stack",
+  "Socket.io": "https://socket.io",
+  "Stripe": "https://stripe.com",
+};
+
 export default function ProjectsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -175,14 +210,31 @@ export default function ProjectsSection() {
                         )}
 
                         <div className="flex flex-wrap gap-2">
-                          {p.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                          {p.tags.map((tag) => {
+                            const link = TECH_LINKS[tag];
+                            if (link) {
+                              return (
+                                <a
+                                  key={tag}
+                                  href={link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-white/30 transition-all backdrop-blur-sm"
+                                >
+                                  {tag}
+                                </a>
+                              );
+                            }
+                            return (
+                              <span
+                                key={tag}
+                                className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/70 backdrop-blur-sm"
+                              >
+                                {tag}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
