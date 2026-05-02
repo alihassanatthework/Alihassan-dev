@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Award, GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
+import { Award, GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const timelineData = [
@@ -37,7 +37,7 @@ const timelineData = [
     platform: "University of Michigan",
     title: "Django for Everybody Specialization",
     date: "Issued Apr 2024 · Expires Jul 2024",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/University_of_Michigan_Official_Logo.svg",
+    logo: "/University of Michigan.png",
     skills: ["Django", "Python", "Back-End Web Development"],
     category: "django"
   },
@@ -64,7 +64,7 @@ const timelineData = [
     platform: "Board Infinity",
     title: "Machine Learning and Deep Learning Specialization",
     date: "Issued Oct 2025 · Expires Jan 2026",
-    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQG7D6-90Kz8Vw/company-logo_200_200/company-logo_200_200/0/1630485669925?e=2147483647&v=beta&t=7u8o5J7r0u8R0G7j-vG-vE-uYmF3x8fO0l-wU2mI-Yc", // Placeholder from LinkedIn
+    logo: "/boardinfinity.png",
     skills: ["Deep Learning", "Computer Vision"],
     category: "dl"
   },
@@ -103,22 +103,25 @@ export default function TimelineSection() {
           {timelineData.map((item, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: idx * 0.05, ease: "easeOut" }}
               className={cn(
-                "liquid-glass rounded-3xl p-6 md:p-8 border border-white/5 hover:border-white/10 transition-all duration-500 group",
+                "liquid-glass rounded-3xl p-6 md:p-8 border border-white/5 hover:border-white/10 transition-all duration-500 group overflow-hidden",
                 item.isTop && "border-white/20 bg-white/[0.03] shadow-[0_0_30px_rgba(255,255,255,0.02)]"
               )}
             >
               <div className="flex flex-col md:flex-row gap-6 md:items-center">
                 {/* Logo Section */}
-                <div className="w-16 h-16 rounded-2xl bg-white/[0.03] p-3 flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-all shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-white/[0.05] p-2 flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-all shrink-0 overflow-hidden shadow-inner">
                   <img 
                     src={item.logo} 
                     alt={item.institution || item.platform} 
-                    className="max-w-full max-h-full object-contain filter brightness-90 grayscale group-hover:grayscale-0 group-hover:brightness-100 transition-all"
+                    className={cn(
+                      "max-w-full max-h-full object-contain filter brightness-90 transition-all duration-700 group-hover:scale-110",
+                      item.logo.includes('svg') ? "grayscale group-hover:grayscale-0" : ""
+                    )}
                   />
                 </div>
 
