@@ -180,6 +180,7 @@ export const cv = {
       desc: "End to end personalised dermatology platform. 5 stage vision pipeline, 90%+ accuracy.",
       tags: ["React", "Django", "YOLOv8", "U-Net", "EfficientNet-B4", "XGBoost"],
       category: ["ml", "vision"],
+      link: "https://github.com/alihassanatthework/fyp",
     },
     {
       slug: "job-portal",
@@ -219,6 +220,7 @@ export const cv = {
       desc: "Role gated analytics. Random Forest, SVM, medal prediction across 120 years of data.",
       tags: ["Flask", "Scikit-learn", "Pandas", "Chart.js", "PostgreSQL"],
       category: ["ml"],
+      link: "https://github.com/alihassanatthework/olympic-dashborad",
     },
     {
       slug: "cv-portfolio",
@@ -228,6 +230,7 @@ export const cv = {
       badge: "10+ CLIENTS",
       badgeColor: "#ec4899",
       desc: "CNN classifiers 92%+, real time YOLOv8 ONNX export. 10+ client engagements.",
+      link: "https://github.com/alihassanatthework/fyp",
       tags: ["Python", "YOLOv8", "OpenCV", "MediaPipe", "TensorFlow", "ONNX"],
       category: ["vision", "freelance"],
     },
