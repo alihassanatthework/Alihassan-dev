@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { useCinematicTimeline } from "@/hooks/useCinematicTimeline";
+import { useCinematic } from "@/context/CinematicContext";
 import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +30,7 @@ const LINKS = [
 ];
 
 export default function Navbar() {
-  const { isFinished } = useCinematicTimeline();
+  const { isFinished } = useCinematic();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();

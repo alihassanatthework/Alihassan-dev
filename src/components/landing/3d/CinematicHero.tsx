@@ -3,12 +3,12 @@
 import { Suspense, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { motion } from "framer-motion";
-import { useCinematicTimeline } from "@/hooks/useCinematicTimeline";
+import { useCinematic } from "@/context/CinematicContext";
 import DeveloperScene from "./DeveloperScene";
 import StaticHero from "../StaticHero";
 
 export default function CinematicHero() {
-  const { phase, isFinished, skip } = useCinematicTimeline();
+  const { phase, isFinished, skip } = useCinematic();
   const [isMobile, setIsMobile] = useState(false);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [unmountCanvas, setUnmountCanvas] = useState(false);
@@ -78,7 +78,7 @@ export default function CinematicHero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
           onClick={skip}
-          className="absolute bottom-8 right-8 z-30 font-mono text-[10px] uppercase tracking-[0.3em] text-white/35 hover:text-white transition-colors"
+          className="absolute bottom-8 right-8 z-[9999] font-mono text-[10px] uppercase tracking-[0.3em] text-white/35 hover:text-white transition-colors"
         >
           Skip Intro →
         </motion.button>

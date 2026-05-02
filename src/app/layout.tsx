@@ -42,6 +42,8 @@ const jsonLd = {
   knowsAbout: ["React", "Django", "Spring Boot", "Machine Learning", "Computer Vision", "Node.js", "TypeScript", "Python", "YOLOv8", "TensorFlow", "XGBoost"],
 };
 
+import { CinematicProvider } from "@/context/CinematicContext";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID ?? "G-6879VC7QMY";
 
@@ -55,9 +57,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen bg-[#000000] text-[#eae9fc]" suppressHydrationWarning>
-        <Navbar />
-        {children}
-        <Chatbot />
+        <CinematicProvider>
+          <Navbar />
+          {children}
+          <Chatbot />
+        </CinematicProvider>
       </body>
       {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
