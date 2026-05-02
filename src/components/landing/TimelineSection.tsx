@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useRef } from "react";
 import { Award, GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +19,7 @@ const timelineData = [
     type: "cert",
     platform: "Meta",
     title: "Meta Front-End Developer Professional",
-    date: "Issued Jan 2024 · Expires Apr 2024",
+    date: "Jan 2024 · Apr 2024",
     logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
     skills: ["Front-End Development"],
     category: "frontend"
@@ -27,7 +28,7 @@ const timelineData = [
     type: "cert",
     platform: "Meta",
     title: "Meta Back-End Developer Professional",
-    date: "Issued Jul 2024 · Expires Dec 2024",
+    date: "Jul 2024 · Dec 2024",
     logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
     skills: ["Back-End Web Development"],
     category: "backend"
@@ -36,7 +37,7 @@ const timelineData = [
     type: "cert",
     platform: "University of Michigan",
     title: "Django for Everybody Specialization",
-    date: "Issued Apr 2024 · Expires Jul 2024",
+    date: "Apr 2024 · Jul 2024",
     logo: "/University of Michigan.png",
     skills: ["Django", "Python", "Back-End Web Development"],
     category: "django"
@@ -45,7 +46,7 @@ const timelineData = [
     type: "cert",
     platform: "Meta",
     title: "Meta Full Stack Developer Specialization",
-    date: "Issued Jan 2024 · Expires Dec 2024",
+    date: "Jan 2024 · Dec 2024",
     logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
     skills: ["Front-End Development", "Full-Stack Development"],
     category: "fullstack"
@@ -54,7 +55,7 @@ const timelineData = [
     type: "cert",
     platform: "IBM",
     title: "IBM Machine Learning Professional",
-    date: "Issued Oct 2025 · Expires Feb 2025",
+    date: "Oct 2025 · Feb 2025",
     logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
     skills: ["Machine Learning", "Data Science"],
     category: "ml"
@@ -63,7 +64,7 @@ const timelineData = [
     type: "cert",
     platform: "Board Infinity",
     title: "Machine Learning and Deep Learning Specialization",
-    date: "Issued Oct 2025 · Expires Jan 2026",
+    date: "Oct 2025 · Jan 2026",
     logo: "/boardinfinity.png",
     skills: ["Deep Learning", "Computer Vision"],
     category: "dl"
@@ -72,7 +73,7 @@ const timelineData = [
     type: "cert",
     platform: "IBM",
     title: "Introduction to Computer Vision and Image Processing",
-    date: "Issued Oct 2025 · Expires Feb 2026",
+    date: "Oct 2025 · Feb 2026",
     logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
     skills: ["Deep Learning", "Computer Vision"],
     category: "cv"
@@ -80,118 +81,165 @@ const timelineData = [
 ];
 
 export default function TimelineSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
+
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
-    <section id="journey" className="bg-black py-24 md:py-32 px-6 overflow-hidden relative">
+    <section id="journey" className="bg-black py-24 md:py-32 px-6 overflow-hidden relative" ref={containerRef}>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.02)_0%,_transparent_60%)] pointer-events-none" />
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mb-20 text-center"
+          className="mb-24 text-center"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl text-white tracking-tight flex flex-col md:flex-row items-center justify-center gap-4">
-            <span>Academic</span>
+          <h2 className="text-4xl md:text-5xl lg:text-7xl text-white tracking-tight flex flex-col md:flex-row items-center justify-center gap-4">
+            <span>The</span>
             <span className="text-white/40 font-light lowercase">Journey</span>
           </h2>
           <div className="h-[1px] w-24 bg-white/10 mx-auto mt-8" />
         </motion.div>
 
-        <div className="space-y-4">
-          {timelineData.map((item, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: idx * 0.05, ease: "easeOut" }}
-              className={cn(
-                "liquid-glass rounded-3xl p-6 md:p-8 border border-white/5 hover:border-white/10 transition-all duration-500 group overflow-hidden",
-                item.isTop && "border-white/20 bg-white/[0.03] shadow-[0_0_30px_rgba(255,255,255,0.02)]"
-              )}
-            >
-              <div className="flex flex-col md:flex-row gap-6 md:items-center">
-                {/* Logo Section */}
-                <div className="w-16 h-16 rounded-2xl bg-white/[0.05] p-2 flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-all shrink-0 overflow-hidden shadow-inner">
-                  <img 
-                    src={item.logo} 
-                    alt={item.institution || item.platform} 
-                    className={cn(
-                      "max-w-full max-h-full object-contain filter brightness-90 transition-all duration-700 group-hover:scale-110",
-                      item.logo.includes('svg') ? "grayscale group-hover:grayscale-0" : ""
-                    )}
-                  />
-                </div>
+        <div className="relative">
+          {/* Central Line */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-white/5 hidden md:block" />
+          <motion.div 
+            style={{ scaleY }}
+            className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-white/20 via-white/40 to-transparent origin-top hidden md:block"
+          />
 
-                {/* Content Section */}
-                <div className="flex-1">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        {item.type === "education" ? (
-                          <GraduationCap className="w-3.5 h-3.5 text-white/40" />
-                        ) : (
-                          <Award className="w-3.5 h-3.5 text-white/40" />
-                        )}
-                        <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase">
-                          {item.type === "education" ? "Academic Degree" : "Professional Certification"}
-                        </span>
-                      </div>
-                      <h3 className="text-white text-lg md:text-xl font-medium tracking-tight group-hover:text-white transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-white/60 text-sm font-light">
-                        {item.institution || item.platform}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-3 md:text-right">
-                      <div className="hidden md:block h-8 w-[1px] bg-white/10" />
-                      <div>
-                        <div className="flex items-center gap-2 text-[10px] text-white/30 font-mono tracking-widest uppercase mb-1">
-                          <Calendar className="w-3 h-3" />
-                          Timeline
-                        </div>
-                        <div className="text-white/50 text-xs font-light">
-                          {item.date}
-                        </div>
-                      </div>
-                    </div>
+          <div className="space-y-12 md:space-y-32">
+            {timelineData.map((item, idx) => {
+              const isLeft = idx % 2 === 0;
+              
+              return (
+                <div key={idx} className="relative flex flex-col md:flex-row items-center">
+                  {/* Central Node */}
+                  <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-2 border-white/20 z-20 hidden md:flex items-center justify-center">
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_10px_white]"
+                    />
                   </div>
 
-                  {/* Skills Section */}
-                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
-                    <span className="text-[10px] text-white/20 font-mono tracking-widest uppercase mr-2 flex items-center gap-2">
-                      <CheckCircle2 className="w-3 h-3" />
-                      Skills:
-                    </span>
-                    {item.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider border border-white/5 bg-white/[0.01] text-white/40 hover:text-white/80 hover:bg-white/[0.03] transition-all"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                  {/* Card Container */}
+                  <div className={cn(
+                    "w-full md:w-[45%]",
+                    isLeft ? "md:mr-auto" : "md:ml-auto"
+                  )}>
+                    <motion.div
+                      initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+                      className={cn(
+                        "liquid-glass rounded-3xl p-6 md:p-10 border border-white/5 hover:border-white/10 transition-all duration-500 group relative",
+                        item.isTop && "border-white/20 bg-white/[0.03] shadow-[0_0_40px_rgba(255,255,255,0.03)]"
+                      )}
+                    >
+                      {/* Brand Connector (Small tail pointing to axis) */}
+                      <div className={cn(
+                        "absolute top-1/2 -translate-y-1/2 w-8 h-[1px] bg-white/10 hidden md:block",
+                        isLeft ? "-right-8" : "-left-8"
+                      )} />
+
+                      <div className="flex flex-col gap-8">
+                        {/* Header Area */}
+                        <div className="flex items-start justify-between gap-6">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3">
+                              {item.type === "education" ? (
+                                <GraduationCap className="w-4 h-4 text-[#00e5bf]" />
+                              ) : (
+                                <Award className="w-4 h-4 text-white/40" />
+                              )}
+                              <span className="text-[10px] font-mono tracking-widest text-white/30 uppercase">
+                                {item.type === "education" ? "Foundational Degree" : "Professional Specialization"}
+                              </span>
+                            </div>
+                            <h3 className="text-white text-xl md:text-3xl font-medium tracking-tight mb-2 leading-tight">
+                              {item.title}
+                            </h3>
+                            <p className="text-white/60 text-sm font-light">
+                              {item.institution || item.platform}
+                            </p>
+                          </div>
+
+                          {/* Logo: Unified Scaling */}
+                          <div className="w-20 h-20 rounded-2xl bg-white/[0.03] p-4 flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all shrink-0 overflow-hidden relative shadow-inner">
+                            <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <img 
+                              src={item.logo} 
+                              alt={item.platform} 
+                              className={cn(
+                                "max-w-full max-h-full object-contain transition-all duration-700 group-hover:scale-110",
+                                // Specialized fit for U-Mich and Board Infinity to match Meta weight
+                                (item.platform === "University of Michigan" || item.platform === "Board Infinity") && "scale-[1.35] group-hover:scale-[1.45]",
+                                item.logo.includes('svg') ? "grayscale group-hover:grayscale-0 brightness-90" : ""
+                              )}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Details Area */}
+                        <div className="flex items-center gap-6 py-4 border-y border-white/5">
+                          <div className="flex items-center gap-3">
+                            <Calendar className="w-4 h-4 text-white/20" />
+                            <span className="text-xs text-white/40 font-mono tracking-wider">{item.date}</span>
+                          </div>
+                          <div className="h-4 w-[1px] bg-white/10" />
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-green-500/50 animate-pulse" />
+                            <span className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-mono">Verified Artifact</span>
+                          </div>
+                        </div>
+
+                        {/* Skills Cloud */}
+                        <div className="flex flex-wrap gap-2">
+                          {item.skills.map((skill) => (
+                            <span
+                              key={skill}
+                              className="px-3 py-1.5 rounded-xl text-[10px] font-mono tracking-wider border border-white/5 bg-white/[0.01] text-white/40 hover:text-white hover:bg-white/[0.05] hover:border-white/20 transition-all backdrop-blur-sm"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Footer Note */}
+        {/* Graduation Anchor */}
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-16 text-center"
+          className="mt-32 text-center"
         >
-          <p className="text-[10px] text-white/20 uppercase tracking-[0.4em] font-mono">
-            Verification IDs available upon request
-          </p>
+          <div className="inline-flex flex-col items-center gap-6">
+            <div className="w-px h-24 bg-gradient-to-b from-white/10 to-transparent" />
+            <p className="text-[10px] text-white/10 uppercase tracking-[0.6em] font-mono">
+              The Journey Continues
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>
