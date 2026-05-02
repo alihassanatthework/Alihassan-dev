@@ -8,23 +8,24 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Ali Hassan | Full Stack Developer & ML Engineer | Lahore, Pakistan",
+  title: "Ali Hassan | Software Engineer & Full Stack Developer & ML Engineer",
   description:
     "Software engineer building production grade web apps and ML pipelines. React, Django, Spring Boot, YOLOv8. 10+ projects shipped, 10+ clients served. Available for freelance.",
-  keywords: ["Full Stack Developer", "ML Engineer", "React", "Django", "YOLOv8", "Freelance", "Lahore", "Pakistan"],
+  keywords: ["Software Engineer", "Full Stack Developer", "ML Engineer", "React", "Django", "YOLOv8", "Freelance", "Lahore", "Pakistan"],
   authors: [{ name: "Ali Hassan" }],
   openGraph: {
-    title: "Ali Hassan — Full Stack Developer & ML AI Engineer",
+    title: "Ali Hassan | Software Engineer & Full Stack Developer & ML AI Engineer",
     description: "Full stack apps · ML pipelines · Computer vision. From architecture to deployment.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ali Hassan — Full Stack Developer & ML AI Engineer",
+    title: "Ali Hassan | Software Engineer & Full Stack Developer & ML AI Engineer",
   },
   icons: {
-    icon: "/favicon.ico?v=3",
+    icon: "/logo.png?v=3",
+    apple: "/logo.png?v=3",
   },
 };
 
@@ -37,7 +38,7 @@ const jsonLd = {
   email: "alihassan.at.the.work@gmail.com",
   telephone: "+923106831523",
   address: { "@type": "PostalAddress", addressLocality: "Lahore", addressCountry: "PK" },
-  sameAs: ["https://github.com/alihassanatthework", "https://linkedin.com/in/ali-hassan-at-the-work"],
+  sameAs: ["https://github.com/alihassanatthework", "https://www.linkedin.com/in/alihassan-developer/"],
   alumniOf: { "@type": "CollegeOrUniversity", name: "University of Management and Technology" },
   knowsAbout: ["React", "Django", "Spring Boot", "Machine Learning", "Computer Vision", "Node.js", "TypeScript", "Python", "YOLOv8", "TensorFlow", "XGBoost"],
 };
