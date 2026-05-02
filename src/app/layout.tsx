@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Ali Hassan — Full Stack Developer & ML AI Engineer",
   },
   icons: {
-    icon: "/favicon.ico?v=2",
+    icon: "/favicon.ico?v=3",
   },
 };
 
