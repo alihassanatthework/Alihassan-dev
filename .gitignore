@@ -48,3 +48,9 @@ node_modules/
 # Logs
 logs/
 *.log
+
+# AI/Editor
+.claude/
+.cursor/
+.windsurf/
+.vscode/
