@@ -191,6 +191,7 @@ export const cv = {
       desc: "3 backends (Spring Boot, Node.js, Flask) sharing 1 React frontend. RBAC, real time chat.",
       tags: ["React", "TypeScript", "Spring Boot", "Node.js", "Flask", "PostgreSQL", "MongoDB"],
       category: ["fullstack"],
+      link: "https://github.com/alihassanatthework/jobportalsystem_flask",
     },
     {
       slug: "sellerova",

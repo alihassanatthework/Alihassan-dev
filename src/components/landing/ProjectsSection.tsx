@@ -137,7 +137,9 @@ export default function ProjectsSection() {
                             {p.title}
                           </h3>
                           {hasLink && (
-                            <span className="text-white/20 text-[10px] font-mono tracking-tighter uppercase">Live Site</span>
+                            <span className="text-white/20 text-[10px] font-mono tracking-tighter uppercase">
+                              {(p as any).link.includes('github.com') ? "Source Code" : "Live Site"}
+                            </span>
                           )}
                         </div>
                         <p className="text-white/50 text-sm leading-relaxed mb-6">
