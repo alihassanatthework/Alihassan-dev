@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { motion } from "framer-motion";
 import { useCinematic } from "@/context/CinematicContext";
+import { cn } from "@/lib/utils";
 import DeveloperScene from "./DeveloperScene";
 import StaticHero from "../StaticHero";
 
@@ -34,7 +35,7 @@ export default function CinematicHero() {
   const slideUp = phase === "transition" || phase === "static" || isFinished;
 
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden">
+    <div className={cn("relative w-full h-screen bg-black overflow-hidden", !isFinished ? "z-[60]" : "z-0")}>
       {/* 3D scene — never unmounts mid-cinematic */}
       {!unmountCanvas && (
         <div className="absolute inset-0 z-0">
