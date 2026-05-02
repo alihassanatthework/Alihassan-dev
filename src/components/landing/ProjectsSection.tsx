@@ -64,10 +64,13 @@ export default function ProjectsSection() {
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((p) => {
-              const hasLink = (p as any).link;
-              const CardWrapper = hasLink ? "a" : "div";
-              const wrapperProps = hasLink 
-                ? { href: (p as any).link, target: "_blank", rel: "noopener noreferrer" } 
+              const project = p as any;
+              const hasLink = project.link;
+              const hasMultiLinks = project.multiLinks && project.multiLinks.length > 0;
+              
+              const CardWrapper = hasLink && !hasMultiLinks ? "a" : "div";
+              const wrapperProps = hasLink && !hasMultiLinks 
+                ? { href: project.link, target: "_blank", rel: "noopener noreferrer" } 
                 : {};
 
               return (
@@ -81,71 +84,95 @@ export default function ProjectsSection() {
                 >
                   <CardWrapper
                     {...wrapperProps}
-                    className="liquid-glass rounded-3xl overflow-hidden group flex flex-col h-full cursor-pointer border border-white/5 hover:border-white/20 transition-all duration-500"
+                    className={cn(
+                      "liquid-glass rounded-3xl overflow-hidden group flex flex-col h-full border border-white/5 hover:border-white/20 transition-all duration-500",
+                      (hasLink || hasMultiLinks) && "cursor-pointer"
+                    )}
                   >
                     {/* Visual Header */}
                     <div 
                       className="relative h-48 md:h-64 flex items-center justify-center overflow-hidden"
                       style={{ background: p.bgGradient || "#000000" }}
                     >
-                      {/* Radial Texture Glow (only for non-logo projects) */}
-                      {!(p as any).logo && (
+                      {/* Radial Texture Glow */}
+                      {!project.logo && (
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.08)_0%,_transparent_65%)] pointer-events-none z-0" />
                       )}
 
                       {/* Logo or Text Abbreviation */}
-                      {(p as any).logo ? (
+                      {project.logo ? (
                         <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center z-10 p-4">
                           <img 
-                            src={(p as any).logo} 
+                            src={project.logo} 
                             alt={`${p.title} logo`}
                             className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-110"
                             style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.2))" }}
                           />
                         </div>
                       ) : (
-                        <span
-                          className="relative z-10 font-mono text-4xl md:text-5xl font-bold text-white/20 transition-transform duration-700 group-hover:scale-110 group-hover:text-white/30"
-                        >
+                        <span className="relative z-10 font-mono text-4xl md:text-5xl font-bold text-white/20 transition-transform duration-700 group-hover:scale-110 group-hover:text-white/30">
                           {p.abbr}
                         </span>
                       )}
                       
                       {p.badge && (
                         <div className="absolute top-4 right-4 liquid-glass rounded-full px-3 py-1 backdrop-blur-md border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)] z-20">
-                          <span 
-                            className="text-[10px] font-mono tracking-widest font-bold text-white/90"
-                          >
+                          <span className="text-[10px] font-mono tracking-widest font-bold text-white/90">
                             {p.badge}
                           </span>
                         </div>
                       )}
 
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30">
-                        <div className="liquid-glass rounded-full p-4 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                          <ArrowUpRight className="w-6 h-6" />
+                      {/* Hover Overlay (only for single link cards) */}
+                      {hasLink && !hasMultiLinks && (
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30">
+                          <div className="liquid-glass rounded-full p-4 text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <ArrowUpRight className="w-6 h-6" />
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     {/* Content Body */}
                     <div className="p-6 md:p-8 flex flex-col flex-1">
-                      <div className="mt-auto">
+                      <div className="flex-1 mb-6">
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-white text-xl md:text-2xl tracking-tight font-medium">
                             {p.title}
                           </h3>
                           {hasLink && (
                             <span className="text-white/20 text-[10px] font-mono tracking-tighter uppercase">
-                              {(p as any).link.includes('github.com') ? "Source Code" : "Live Site"}
+                              {project.link.includes('github.com') ? "Source Code" : "Live Site"}
                             </span>
                           )}
+                          {hasMultiLinks && (
+                            <span className="text-[#00e5bf]/60 text-[10px] font-mono tracking-tighter uppercase">Multi-Repo</span>
+                          )}
                         </div>
-                        <p className="text-white/50 text-sm leading-relaxed mb-6">
+                        <p className="text-white/50 text-sm leading-relaxed">
                           {p.desc}
                         </p>
-                        
+                      </div>
+
+                      <div className="space-y-6">
+                        {/* Multi Links Buttons */}
+                        {hasMultiLinks && (
+                          <div className="grid grid-cols-2 gap-3">
+                            {project.multiLinks.map((ml: any) => (
+                              <a
+                                key={ml.label}
+                                href={ml.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/10 transition-all text-[10px] font-mono text-white/70 hover:text-white uppercase tracking-wider"
+                              >
+                                {ml.label}
+                                <ArrowUpRight className="w-3 h-3" />
+                              </a>
+                            ))}
+                          </div>
+                        )}
+
                         <div className="flex flex-wrap gap-2">
                           {p.tags.map((tag) => (
                             <span
