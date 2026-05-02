@@ -5,7 +5,7 @@ export const cv = {
   email: "alihassan.at.the.work@gmail.com",
   phone: "+92 310 683 1523",
   github: "https://github.com/alihassanatthework",
-  linkedin: "https://linkedin.com/in/ali-hassan-at-the-work",
+  linkedin: "https://www.linkedin.com/in/alihassan-developer/",
   available: true,
   rates: { hourly: "$20–30 hr" },
 

@@ -61,9 +61,12 @@ export default function Footer() {
           
           {/* Column 1: Brand */}
           <div className="space-y-10">
-            <div className="flex items-center gap-1 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <span className="text-white font-bold text-2xl tracking-tight">Ali</span>
-              <span className="text-white/80 font-light text-2xl tracking-tight">hassan</span>
+            <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <img 
+                src="/logo.png" 
+                alt="Ali Hassan Logo" 
+                className="h-10 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
             
             <div className="flex items-center gap-5 grayscale opacity-20 hover:opacity-50 transition-all duration-700">
