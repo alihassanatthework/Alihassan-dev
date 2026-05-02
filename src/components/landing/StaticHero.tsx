@@ -49,6 +49,7 @@ export default function StaticHero() {
           <span className="font-light text-zinc-400">
             {cv.name.split(" ").slice(1).join(" ")}
           </span>
+          <span className="sr-only"> — Software Engineer & Full Stack Developer & ML Engineer</span>
         </motion.h1>
 
         {/* Roles — standard body text */}

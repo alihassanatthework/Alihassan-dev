@@ -7,21 +7,51 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 
+const baseUrl = "https://www.alihassan-dev.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: "Ali Hassan | Software Engineer & Full Stack Developer & ML Engineer",
   description:
-    "Software engineer building production grade web apps and ML pipelines. React, Django, Spring Boot, YOLOv8. 10+ projects shipped, 10+ clients served. Available for freelance.",
-  keywords: ["Software Engineer", "Full Stack Developer", "ML Engineer", "React", "Django", "YOLOv8", "Freelance", "Lahore", "Pakistan"],
+    "Expert Software Engineer specializing in Full Stack Web Development (React, Django, Node.js) and Machine Learning (Computer Vision, YOLOv8). 10+ production projects shipped for global clients.",
+  keywords: [
+    "Software Engineer Lahore",
+    "Full Stack Developer Pakistan",
+    "ML AI Engineer",
+    "Computer Vision Specialist",
+    "React TypeScript Developer",
+    "Django Backend Expert",
+    "Amazon SP API Automation",
+    "YOLOv8 Object Detection",
+    "SaaS Architecture",
+    "Freelance Software Engineer",
+    "UMT Software Engineering"
+  ],
   authors: [{ name: "Ali Hassan" }],
+  alternates: {
+    canonical: baseUrl,
+  },
   openGraph: {
     title: "Ali Hassan | Software Engineer & Full Stack Developer & ML AI Engineer",
-    description: "Full stack apps · ML pipelines · Computer vision. From architecture to deployment.",
+    description: "Architecting production-grade systems with React, Django, and AI. Explore 10+ shipped projects.",
+    url: baseUrl,
+    siteName: "Ali Hassan Portfolio",
+    images: [
+      {
+        url: "/profile.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ali Hassan - Software Engineer Portfolio",
+      },
+    ],
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
     title: "Ali Hassan | Software Engineer & Full Stack Developer & ML AI Engineer",
+    description: "Full Stack Web & AI Solutions. Shipped 10+ production-grade projects.",
+    images: ["/profile.jpg"],
   },
   icons: {
     icon: "/logo.png?v=3",
