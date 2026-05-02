@@ -11,7 +11,7 @@ const timelineData = [
     title: "BS Software Engineering",
     institution: "University of Management and Technology (UMT)",
     date: "Nov 2022 – Jun 2026",
-    logo: "https://upload.wikimedia.org/wikipedia/en/2/2f/University_of_Management_and_Technology_%28Lahore%29_logo.png",
+    logo: "/UMT Logo.png",
     skills: ["Software Architecture", "AI ML", "Web Engineering", "Database Systems", "SPM", "SQE"],
     isTop: true
   },
@@ -186,8 +186,8 @@ export default function TimelineSection() {
                               alt={item.platform} 
                               className={cn(
                                 "max-w-full max-h-full object-contain transition-all duration-700 group-hover:scale-110",
-                                // Specialized fit for U-Mich and Board Infinity to match Meta weight
-                                (item.platform === "University of Michigan" || item.platform === "Board Infinity") && "scale-[1.35] group-hover:scale-[1.45]",
+                                // Specialized fit for U-Mich, Board Infinity, and UMT to match Meta weight
+                                (item.platform?.includes("University of Michigan") || item.platform === "Board Infinity" || item.institution?.includes("UMT")) && "scale-[1.35] group-hover:scale-[1.45]",
                                 item.logo.includes('svg') ? "grayscale group-hover:grayscale-0 brightness-90" : ""
                               )}
                             />
