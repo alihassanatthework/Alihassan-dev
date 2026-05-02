@@ -208,19 +208,40 @@ export default function SkillsSection() {
                   </h4>
                   <div className="flex flex-col gap-4 flex-1">
                     {selectedSkill.projects?.map((projName) => {
-                      const proj = cv.projects.find(p => p.title.toLowerCase().includes(projName.toLowerCase()) || projName.includes(p.abbr));
-                      
-                      return (
-                        <div key={projName} className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-white/20 transition-all group">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h5 className="text-white font-medium mb-1 tracking-tight">{projName}</h5>
-                              <p className="text-white/30 text-[10px] uppercase tracking-widest font-mono">Verified Production Shipped</p>
-                            </div>
+                      const proj = cv.projects.find(p => p.title.toLowerCase().includes(projName.toLowerCase()) || projName.toLowerCase().includes(p.title.toLowerCase()) || projName.includes(p.abbr));
+                      const projectLink = (proj as any)?.link || (proj as any)?.multiLinks?.[0]?.url;
+
+                      const Content = (
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h5 className="text-white font-medium mb-1 tracking-tight">{projName}</h5>
+                            <p className="text-white/30 text-[10px] uppercase tracking-widest font-mono">Verified Production Shipped</p>
+                          </div>
+                          {projectLink && (
                             <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white group-hover:text-black transition-all">
                               <ExternalLink className="w-4 h-4" />
                             </div>
-                          </div>
+                          )}
+                        </div>
+                      );
+
+                      if (projectLink) {
+                        return (
+                          <a 
+                            key={projName} 
+                            href={projectLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-white/20 transition-all group block cursor-pointer"
+                          >
+                            {Content}
+                          </a>
+                        );
+                      }
+
+                      return (
+                        <div key={projName} className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 transition-all">
+                          {Content}
                         </div>
                       );
                     })}
