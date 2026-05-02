@@ -24,6 +24,7 @@ const LINKS = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
   { name: "Portfolio", href: "#projects" },
+  { name: "Journey", href: "#journey" },
   { name: "Reviews", href: "#reviews" },
   { name: "Contact", href: "#contact" },
 ];
