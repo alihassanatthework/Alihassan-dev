@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { cv } from "@/data/cv";
 import { ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const FILTERS = [
   { id: "all", label: "ALL" },
