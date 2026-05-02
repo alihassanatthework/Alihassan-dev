@@ -65,7 +65,7 @@ export default function Footer() {
               <img 
                 src="/logo.png" 
                 alt="Ali Hassan Logo" 
-                className="h-10 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                className="h-20 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
               />
             </div>
             
