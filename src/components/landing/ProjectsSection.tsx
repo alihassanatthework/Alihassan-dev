@@ -214,16 +214,16 @@ export default function ProjectsSection() {
                             const link = TECH_LINKS[tag];
                             if (link) {
                               return (
-                                <a
+                                <span
                                   key={tag}
-                                  href={link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-white/30 transition-all backdrop-blur-sm"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    window.open(link, '_blank', 'noopener,noreferrer');
+                                  }}
+                                  className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-white/30 transition-all backdrop-blur-sm cursor-pointer"
                                 >
                                   {tag}
-                                </a>
+                                </span>
                               );
                             }
                             return (
