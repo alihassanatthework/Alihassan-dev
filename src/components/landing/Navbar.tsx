@@ -65,9 +65,12 @@ export default function Navbar() {
             )}
           >
             {/* Left: Logo */}
-            <div className="flex items-center gap-1 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <span className="text-white font-bold text-lg tracking-tight">Ali</span>
-              <span className="text-white/80 font-light text-lg tracking-tight">hassan</span>
+            <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <img 
+                src="/logo.png" 
+                alt="Ali Hassan Logo" 
+                className="h-10 md:h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
 
             {/* Center: Links */}

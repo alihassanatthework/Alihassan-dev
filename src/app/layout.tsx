@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ali Hassan — Full Stack Developer & ML AI Engineer",
   },
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 const jsonLd = {
