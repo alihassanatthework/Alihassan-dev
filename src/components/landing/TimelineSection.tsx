@@ -1,97 +1,195 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ExternalLink, Award, GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const timelineData = [
   {
-    year: "2022 – 2026",
+    type: "education",
     title: "BS Software Engineering",
     institution: "University of Management and Technology (UMT)",
-    location: "Lahore, Pakistan",
-    desc: "Focused on requirements analysis, system design, development, testing, and project management within the software development lifecycle. Specialized in building production-grade AI platforms.",
+    date: "Nov 2022 – Jun 2026",
+    logo: "https://upload.wikimedia.org/wikipedia/en/2/2f/University_of_Management_and_Technology_%28Lahore%29_logo.png",
+    skills: ["Software Architecture", "AI ML", "Web Engineering", "Database Systems", "SPM", "SQE"],
+    isTop: true
   },
   {
-    year: "2024",
-    title: "IBM Machine Learning Professional",
-    institution: "IBM / Coursera",
-    desc: "Comprehensive certification covering classical ML, Deep Learning, NLP, and Computer Vision using Python, Scikit-learn, and TensorFlow.",
-  },
-  {
-    year: "2023",
+    type: "cert",
+    platform: "Meta",
     title: "Meta Front-End Developer Professional",
-    institution: "Meta / Coursera",
-    desc: "Advanced certification in React, TypeScript, and modern UI/UX design principles, focused on building production-grade web applications.",
+    date: "Issued Jan 2024 · Expires Apr 2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+    skills: ["Front-End Development"],
+    category: "frontend"
   },
   {
-    year: "2023",
+    type: "cert",
+    platform: "Meta",
     title: "Meta Back-End Developer Professional",
-    institution: "Meta / Coursera",
-    desc: "In-depth training in Python, Django, Database architecture, APIs, and Version Control (Git).",
+    date: "Issued Jul 2024 · Expires Dec 2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+    skills: ["Back-End Web Development"],
+    category: "backend"
+  },
+  {
+    type: "cert",
+    platform: "University of Michigan",
+    title: "Django for Everybody Specialization",
+    date: "Issued Apr 2024 · Expires Jul 2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/University_of_Michigan_Official_Logo.svg",
+    skills: ["Django", "Python", "Back-End Web Development"],
+    category: "django"
+  },
+  {
+    type: "cert",
+    platform: "Meta",
+    title: "Meta Full Stack Developer Specialization",
+    date: "Issued Jan 2024 · Expires Dec 2024",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+    skills: ["Front-End Development", "Full-Stack Development"],
+    category: "fullstack"
+  },
+  {
+    type: "cert",
+    platform: "IBM",
+    title: "IBM Machine Learning Professional",
+    date: "Issued Oct 2025 · Expires Feb 2025",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+    skills: ["Machine Learning", "Data Science"],
+    category: "ml"
+  },
+  {
+    type: "cert",
+    platform: "Board Infinity",
+    title: "Machine Learning and Deep Learning Specialization",
+    date: "Issued Oct 2025 · Expires Jan 2026",
+    logo: "https://media.licdn.com/dms/image/v2/C4D0BAQG7D6-90Kz8Vw/company-logo_200_200/company-logo_200_200/0/1630485669925?e=2147483647&v=beta&t=7u8o5J7r0u8R0G7j-vG-vE-uYmF3x8fO0l-wU2mI-Yc", // Placeholder from LinkedIn
+    skills: ["Deep Learning", "Computer Vision"],
+    category: "dl"
+  },
+  {
+    type: "cert",
+    platform: "IBM",
+    title: "Introduction to Computer Vision and Image Processing",
+    date: "Issued Oct 2025 · Expires Feb 2026",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+    skills: ["Deep Learning", "Computer Vision"],
+    category: "cv"
   }
 ];
 
 export default function TimelineSection() {
   return (
     <section id="journey" className="bg-black py-24 md:py-32 px-6 overflow-hidden relative">
-      <div className="max-w-6xl mx-auto"> {/* Increased max-width */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.02)_0%,_transparent_60%)] pointer-events-none" />
+
+      <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-left mb-24"
+          transition={{ duration: 0.7 }}
+          className="mb-20 text-center"
         >
-          <h2 className="text-white tracking-tight">
-            The <span className="text-white/40 font-light italic">journey</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl text-white tracking-tight flex flex-col md:flex-row items-center justify-center gap-4">
+            <span>Academic</span>
+            <span className="text-white/40 font-light lowercase">Journey</span>
           </h2>
+          <div className="h-[1px] w-24 bg-white/10 mx-auto mt-8" />
         </motion.div>
 
-        <div className="relative">
-          {/* Vertical Line - Pure White Glow */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-white/10 -translate-x-1/2">
-            <motion.div 
-              initial={{ height: 0 }}
-              whileInView={{ height: '100%' }}
+        <div className="space-y-4">
+          {timelineData.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 2, ease: "easeInOut" }}
-              className="w-full bg-white shadow-[0_0_20px_rgba(255,255,255,0.6)]"
-            />
-          </div>
-
-          <div className="space-y-16"> {/* Increased spacing */}
-            {timelineData.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                className={`relative flex items-center justify-between w-full md:w-1/2 ${
-                  index % 2 === 0 ? "md:ml-0 md:mr-auto md:pr-16" : "md:ml-auto md:mr-0 md:pl-16"
-                } pl-12 md:pl-0`}
-              >
-                {/* Dot - Pure White */}
-                <div 
-                  className="absolute left-[-1.5px] md:left-auto md:right-[-5px] top-6 md:top-10 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1)] z-10"
-                  style={{ left: index % 2 === 0 ? 'auto' : '-5px', right: index % 2 === 0 ? '-5px' : 'auto' }}
-                />
-
-                <div className="w-full liquid-glass rounded-3xl p-8 md:p-10 border border-white/5 group hover:border-white/20 transition-all duration-500 hover:bg-white/[0.02]">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="body-small uppercase tracking-[0.25em] text-white/30 font-medium">{item.year}</span>
-                    <div className="w-3 h-3 rounded-full bg-white/5 group-hover:bg-white shadow-[0_0_10px_transparent] group-hover:shadow-[0_0_15px_white] transition-all" />
-                  </div>
-                  
-                  <h3 className="text-white mb-2 text-2xl md:text-3xl lg:text-4xl">{item.title}</h3>
-                  <div className="text-white/60 body-large mb-6">{item.institution}</div>
-                  
-                  <p className="body-small text-white/40 leading-relaxed text-base md:text-lg">
-                    {item.desc}
-                  </p>
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className={cn(
+                "liquid-glass rounded-3xl p-6 md:p-8 border border-white/5 hover:border-white/10 transition-all duration-500 group",
+                item.isTop && "border-white/20 bg-white/[0.03] shadow-[0_0_30px_rgba(255,255,255,0.02)]"
+              )}
+            >
+              <div className="flex flex-col md:flex-row gap-6 md:items-center">
+                {/* Logo Section */}
+                <div className="w-16 h-16 rounded-2xl bg-white/[0.03] p-3 flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-all shrink-0">
+                  <img 
+                    src={item.logo} 
+                    alt={item.institution || item.platform} 
+                    className="max-w-full max-h-full object-contain filter brightness-90 grayscale group-hover:grayscale-0 group-hover:brightness-100 transition-all"
+                  />
                 </div>
-              </motion.div>
-            ))}
-          </div>
+
+                {/* Content Section */}
+                <div className="flex-1">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        {item.type === "education" ? (
+                          <GraduationCap className="w-3.5 h-3.5 text-white/40" />
+                        ) : (
+                          <Award className="w-3.5 h-3.5 text-white/40" />
+                        )}
+                        <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase">
+                          {item.type === "education" ? "Academic Degree" : "Professional Certification"}
+                        </span>
+                      </div>
+                      <h3 className="text-white text-lg md:text-xl font-medium tracking-tight group-hover:text-white transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-white/60 text-sm font-light">
+                        {item.institution || item.platform}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3 md:text-right">
+                      <div className="hidden md:block h-8 w-[1px] bg-white/10" />
+                      <div>
+                        <div className="flex items-center gap-2 text-[10px] text-white/30 font-mono tracking-widest uppercase mb-1">
+                          <Calendar className="w-3 h-3" />
+                          Timeline
+                        </div>
+                        <div className="text-white/50 text-xs font-light">
+                          {item.date}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Skills Section */}
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                    <span className="text-[10px] text-white/20 font-mono tracking-widest uppercase mr-2 flex items-center gap-2">
+                      <CheckCircle2 className="w-3 h-3" />
+                      Skills:
+                    </span>
+                    {item.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider border border-white/5 bg-white/[0.01] text-white/40 hover:text-white/80 hover:bg-white/[0.03] transition-all"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Footer Note */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-16 text-center"
+        >
+          <p className="text-[10px] text-white/20 uppercase tracking-[0.4em] font-mono">
+            Verification IDs available upon request
+          </p>
+        </motion.div>
       </div>
     </section>
   );
