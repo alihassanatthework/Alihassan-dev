@@ -68,7 +68,7 @@ export default function AboutSection() {
               className="space-y-6"
             >
               <p className="text-white/80 text-xl md:text-2xl font-light leading-snug tracking-tight text-balance">
-                I am a final year Software Engineering student at <a href="https://www.umt.edu.pk/" target="_blank" rel="noopener noreferrer" className={linkClass}>UMT Lahore</a> with a singular focus: architecting production systems that deliver measurable impact.
+                 Software Engineering from <a href="https://www.umt.edu.pk/" target="_blank" rel="noopener noreferrer" className={linkClass}>UMT Lahore</a> with a singular focus: architecting production systems that deliver measurable impact.
               </p>
               
               <p className="text-white/50 text-base md:text-lg leading-relaxed">
