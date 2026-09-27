@@ -20,14 +20,14 @@ export default function StaticHero() {
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           className="relative mb-12 h-32 w-32 rounded-full border border-white/10 p-1 md:h-44 md:w-44"
         >
-          <div className="relative h-full w-full overflow-hidden rounded-full grayscale contrast-110">
+          <div className="relative h-full w-full overflow-hidden rounded-full">
             <Image
               src="/profile.jpg"
               alt={cv.name}
               fill
               priority
               className="object-cover"
-              style={{ objectPosition: "center 18%" }}
+              style={{ objectPosition: "center 25%" }}
             />
           </div>
           <motion.div
