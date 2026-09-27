@@ -12,37 +12,38 @@ const baseUrl = "https://www.alihassan-dev.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: "Ali Hassan | Software Engineer & Full Stack Developer & ML Engineer",
+  title: "Ali Hassan | Full Stack Developer & Software Engineer",
   description:
-    "Expert Software Engineer specializing in Full Stack Web Development (React, Django, Node.js) and Machine Learning (Computer Vision, YOLOv8). 10+ production projects shipped for global clients.",
+    "I build custom web apps and software solutions for businesses worldwide. 10+ production projects delivered with React, Django, Node.js, and AI. Available for freelance projects.",
   keywords: [
-    "Software Engineer Lahore",
-    "Full Stack Developer Pakistan",
-    "ML AI Engineer",
-    "Computer Vision Specialist",
-    "React TypeScript Developer",
-    "Django Backend Expert",
-    "Amazon SP API Automation",
-    "YOLOv8 Object Detection",
-    "SaaS Architecture",
-    "Freelance Software Engineer",
-    "UMT Software Engineering"
+    "hire freelance web developer",
+    "custom software development services",
+    "freelance full stack developer",
+    "website developer for hire",
+    "web application development",
+    "React developer for hire",
+    "Django developer freelance",
+    "Node.js developer",
+    "custom web app development",
+    "software engineer Lahore Pakistan",
+    "AI ML developer freelance",
+    "computer vision developer",
   ],
   authors: [{ name: "Ali Hassan" }],
   alternates: {
     canonical: baseUrl,
   },
   openGraph: {
-    title: "Ali Hassan | Software Engineer & Full Stack Developer & ML AI Engineer",
-    description: "Architecting production-grade systems with React, Django, and AI. Explore 10+ shipped projects.",
+    title: "Ali Hassan | Full Stack Developer & Software Engineer",
+    description: "Custom web apps and software solutions. 10+ production projects delivered for global clients. React, Django, Node.js, AI.",
     url: baseUrl,
-    siteName: "Ali Hassan Portfolio",
+    siteName: "Ali Hassan — Software Development Services",
     images: [
       {
         url: "/profile.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Ali Hassan - Software Engineer Portfolio",
+        width: 672,
+        height: 1052,
+        alt: "Ali Hassan — Full Stack Developer specializing in React, Django, and AI solutions",
       },
     ],
     type: "website",
@@ -50,27 +51,52 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ali Hassan | Software Engineer & Full Stack Developer & ML AI Engineer",
-    description: "Full Stack Web & AI Solutions. Shipped 10+ production-grade projects.",
+    title: "Ali Hassan | Full Stack Developer & Software Engineer",
+    description: "Custom web apps and software solutions. 10+ projects shipped for global clients.",
     images: ["/profile.jpg"],
   },
   icons: {
     icon: "/logo.png?v=3",
     apple: "/logo.png?v=3",
   },
+  manifest: "/manifest.json",
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Ali Hassan",
-  jobTitle: "Software Engineer",
-  description: "Full Stack Developer and ML AI Engineer based in Lahore, Pakistan",
-  address: { "@type": "PostalAddress", addressLocality: "Lahore", addressCountry: "PK" },
-  sameAs: ["https://github.com/alihassanatthework", "https://www.linkedin.com/in/alihassan-developer/"],
-  alumniOf: { "@type": "CollegeOrUniversity", name: "University of Management and Technology" },
-  knowsAbout: ["React", "Django", "Spring Boot", "Machine Learning", "Computer Vision", "Node.js", "TypeScript", "Python", "YOLOv8", "TensorFlow", "XGBoost"],
-};
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Ali Hassan",
+    jobTitle: "Full Stack Developer",
+    url: baseUrl,
+    description: "Freelance Full Stack Developer and Software Engineer delivering custom web applications and AI solutions for global clients.",
+    address: { "@type": "PostalAddress", addressLocality: "Lahore", addressCountry: "PK" },
+    sameAs: ["https://github.com/alihassanatthework", "https://www.linkedin.com/in/alihassan-developer/"],
+    alumniOf: { "@type": "CollegeOrUniversity", name: "University of Management and Technology" },
+    knowsAbout: ["React", "Django", "Spring Boot", "Machine Learning", "Computer Vision", "Node.js", "TypeScript", "Python"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Ali Hassan — Software Development Services",
+    url: baseUrl,
+    description: "Custom web application development, full stack software engineering, and AI/ML solutions. 10+ production projects delivered for clients worldwide.",
+    provider: { "@type": "Person", name: "Ali Hassan" },
+    areaServed: "Worldwide",
+    address: { "@type": "PostalAddress", addressLocality: "Lahore", addressCountry: "PK" },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Software Development Services",
+      itemListElement: [
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Full Stack Web Application Development" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Software Development" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI & Machine Learning Solutions" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Backend API Development" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Computer Vision Applications" } },
+      ],
+    },
+  },
+];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID ?? "G-6879VC7QMY";
