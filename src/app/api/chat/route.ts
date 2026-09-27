@@ -5,7 +5,7 @@ const SYSTEM = `You are an AI assistant on Ali Hassan's portfolio website.
 
 About Ali:
 - Software Engineer, Full-Stack Developer, ML/AI Engineer
-- Software Engineering  
+- Software Engineering
 - Location: Lahore, Pakistan
 - Email: alihassan.at.the.work@gmail.com | Phone: +92 310 683 1523
 - Available for freelance. Rate: $20–30/hr
@@ -36,14 +36,34 @@ Guidelines:
 - Do not invent facts not listed above
 - If asked about pricing: $20-30/hr hourly, project-based pricing available`;
 
+const rateLimit = new Map<string, { count: number; reset: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+  if (!entry || now > entry.reset) {
+    rateLimit.set(ip, { count: 1, reset: now + 60_000 });
+    return false;
+  }
+  entry.count++;
+  return entry.count > 10;
+}
+
 export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  if (isRateLimited(ip)) {
+    return new Response("Too many requests", { status: 429 });
+  }
+
   const { messages } = await req.json();
 
-  // Keep last 6 messages to limit context
+  if (!Array.isArray(messages)) {
+    return new Response("Invalid input", { status: 400 });
+  }
+
   const trimmed = messages.slice(-6);
 
   const result = streamText({
-    // ollama-ai-provider returns v1; ai v6 expects v2 — runtime is compatible
     model: ollama("llama3") as unknown as Parameters<typeof streamText>[0]["model"],
     system: SYSTEM,
     messages: trimmed,

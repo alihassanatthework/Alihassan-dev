@@ -11,7 +11,7 @@ const timelineData = [
     title: "BS Software Engineering",
     institution: "University of Management and Technology (UMT)",
     date: "Nov 2022 – Jun 2026",
-    logo: "/UMT Logo.png",
+    logo: "/umt-logo.png",
     skills: ["Software Architecture", "AI ML", "Web Engineering", "Database Systems", "SPM", "SQE"],
     isTop: true
   },
@@ -38,7 +38,7 @@ const timelineData = [
     platform: "University of Michigan",
     title: "Django for Everybody Specialization",
     date: "Apr 2024 · Jul 2024",
-    logo: "/University of Michigan.png",
+    logo: "/university-of-michigan.png",
     skills: ["Django", "Python", "Back-End Web Development"],
     category: "django"
   },
@@ -181,9 +181,9 @@ export default function TimelineSection() {
                           {/* Logo: Unified Scaling */}
                           <div className="w-20 h-20 rounded-2xl bg-white/[0.03] p-4 flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all shrink-0 overflow-hidden relative shadow-inner">
                             <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <img 
-                              src={item.logo} 
-                              alt={item.platform} 
+                            <img
+                              src={item.logo}
+                              alt={item.platform || item.institution || item.title}
                               className={cn(
                                 "max-w-full max-h-full object-contain transition-all duration-700 group-hover:scale-110",
                                 // Specialized fit for U-Mich, Board Infinity, and UMT to match Meta weight

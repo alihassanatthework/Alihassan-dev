@@ -14,40 +14,7 @@ const FILTERS = [
   { id: "freelance", label: "FREELANCE" },
 ];
 
-const TECH_LINKS: Record<string, string> = {
-  "React": "https://react.dev",
-  "TypeScript": "https://www.typescriptlang.org",
-  "Tailwind CSS": "https://tailwindcss.com",
-  "Bootstrap": "https://getbootstrap.com",
-  "HTML5": "https://developer.mozilla.org/en-US/docs/Web/HTML",
-  "CSS3": "https://developer.mozilla.org/en-US/docs/Web/CSS",
-  "Node.js": "https://nodejs.org",
-  "Express": "https://expressjs.com",
-  "Django": "https://www.djangoproject.com",
-  "DRF": "https://www.django-rest-framework.org",
-  "Spring Boot": "https://spring.io/projects/spring-boot",
-  "Flask": "https://flask.palletsprojects.com",
-  "Scikit-learn": "https://scikit-learn.org",
-  "XGBoost": "https://xgboost.readthedocs.io",
-  "Pandas": "https://pandas.pydata.org",
-  "NumPy": "https://numpy.org",
-  "spaCy": "https://spacy.io",
-  "Hugging Face": "https://huggingface.co",
-  "YOLOv8": "https://docs.ultralytics.com",
-  "U-Net": "https://arxiv.org/abs/1505.04597",
-  "EfficientNet-B4": "https://arxiv.org/abs/1905.11946",
-  "MediaPipe": "https://mediapipe.dev",
-  "OpenCV": "https://opencv.org",
-  "CNNs": "https://en.wikipedia.org/wiki/Convolutional_neural_network",
-  "MySQL": "https://www.mysql.com",
-  "PostgreSQL": "https://www.postgresql.org",
-  "MongoDB": "https://www.mongodb.com",
-  "SQLite": "https://www.sqlite.org",
-  "Amazon SP API": "https://developer-docs.amazon.com/sp-api",
-  "MERN": "https://www.mongodb.com/mern-stack",
-  "Socket.io": "https://socket.io",
-  "Stripe": "https://stripe.com",
-};
+import { TECH_LINKS } from "@/lib/constants";
 
 export default function ProjectsSection() {
   const ref = useRef(null);
@@ -100,14 +67,12 @@ export default function ProjectsSection() {
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((p) => {
-              const project = p as any;
+              const project = p as typeof p & { link?: string; multiLinks?: { label: string; url: string }[]; logo?: string };
               const hasLink = project.link;
               const hasMultiLinks = project.multiLinks && project.multiLinks.length > 0;
               
-              const CardWrapper = hasLink && !hasMultiLinks ? "a" : "div";
-              const wrapperProps = hasLink && !hasMultiLinks 
-                ? { href: project.link, target: "_blank", rel: "noopener noreferrer" } 
-                : {};
+              const CardWrapper = "div";
+              const wrapperProps = {};
 
               return (
                 <motion.div
@@ -120,6 +85,7 @@ export default function ProjectsSection() {
                 >
                   <CardWrapper
                     {...wrapperProps}
+                    onClick={hasLink && !hasMultiLinks ? () => window.open(project.link, '_blank', 'noopener,noreferrer') : undefined}
                     className={cn(
                       "liquid-glass rounded-3xl overflow-hidden group flex flex-col h-full border border-white/5 hover:border-white/20 transition-all duration-500",
                       (hasLink || hasMultiLinks) && "cursor-pointer"
@@ -194,7 +160,7 @@ export default function ProjectsSection() {
                         {/* Multi Links Buttons */}
                         {hasMultiLinks && (
                           <div className="grid grid-cols-2 gap-3">
-                            {project.multiLinks.map((ml: any) => (
+                            {project.multiLinks.map((ml: { label: string; url: string }) => (
                               <a
                                 key={ml.label}
                                 href={ml.url}
@@ -214,16 +180,16 @@ export default function ProjectsSection() {
                             const link = TECH_LINKS[tag];
                             if (link) {
                               return (
-                                <span
+                                <a
                                   key={tag}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    window.open(link, '_blank', 'noopener,noreferrer');
-                                  }}
-                                  className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-white/30 transition-all backdrop-blur-sm cursor-pointer"
+                                  href={link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="px-2.5 py-1 rounded-md text-[10px] font-mono tracking-wider border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-white/30 transition-all backdrop-blur-sm"
                                 >
                                   {tag}
-                                </span>
+                                </a>
                               );
                             }
                             return (

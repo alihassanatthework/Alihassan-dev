@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Image from "next/image";
 import { cv } from "@/data/cv";
 
 export default function AboutSection() {
@@ -48,9 +49,11 @@ export default function AboutSection() {
             transition={{ duration: 1, delay: 0.3 }}
             className="relative group rounded-3xl overflow-hidden liquid-glass border border-white/10 shadow-2xl"
           >
-            <img 
-              src="/journey.png" 
-              alt="My Journey" 
+            <Image
+              src="/journey.png"
+              alt="Ali Hassan's development journey"
+              width={600}
+              height={400}
               className="w-full h-auto object-cover transition-all duration-1000 group-hover:scale-105 filter grayscale-[0.2] brightness-[0.9] group-hover:grayscale-0 group-hover:brightness-100"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />

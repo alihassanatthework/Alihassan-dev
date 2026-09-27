@@ -69,26 +69,33 @@ export default function ContactSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
           >
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="hidden" aria-hidden="true">
+                <input type="text" name="honeypot" tabIndex={-1} autoComplete="off" />
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <input {...register("name")} placeholder="Your name" className={inputCls(errors.name)} />
+                  <label htmlFor="contact-name" className="sr-only">Your name</label>
+                  <input {...register("name")} id="contact-name" placeholder="Your name" className={inputCls(errors.name)} />
                   {errors.name && <p className="mt-1.5 text-[10px] text-red-400 font-mono pl-2">{errors.name.message}</p>}
                 </div>
                 <div>
-                  <input {...register("email")} type="email" placeholder="you@company.com" className={inputCls(errors.email)} />
+                  <label htmlFor="contact-email" className="sr-only">Email</label>
+                  <input {...register("email")} id="contact-email" type="email" placeholder="you@company.com" className={inputCls(errors.email)} />
                   {errors.email && <p className="mt-1.5 text-[10px] text-red-400 font-mono pl-2">{errors.email.message}</p>}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <select {...register("service")} className={inputCls()}>
+                  <label htmlFor="contact-service" className="sr-only">Service</label>
+                  <select {...register("service")} id="contact-service" className={inputCls()}>
                     <option value="" className="bg-black">Select service ▾</option>
                     {services.map((s) => <option key={s} value={s} className="bg-black">{s}</option>)}
                   </select>
                 </div>
                 <div>
-                  <select {...register("budget")} className={inputCls()}>
+                  <label htmlFor="contact-budget" className="sr-only">Budget</label>
+                  <select {...register("budget")} id="contact-budget" className={inputCls()}>
                     <option value="" className="bg-black">Select budget range ▾</option>
                     {budgets.map((b) => <option key={b} value={b} className="bg-black">{b}</option>)}
                   </select>
@@ -96,8 +103,10 @@ export default function ContactSection() {
               </div>
 
               <div>
+                <label htmlFor="contact-message" className="sr-only">Message</label>
                 <textarea
                   {...register("message")}
+                  id="contact-message"
                   rows={5}
                   placeholder="Tell me about your project..."
                   className={`${inputCls(errors.message)} resize-none`}

@@ -3,44 +3,8 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { cv } from "@/data/cv";
-import { ExternalLink, X, Trophy, Code2, Layers, Cpu, Database, Globe, Briefcase } from "lucide-react";
-
-const TECH_LINKS: Record<string, string> = {
-  "React": "https://react.dev",
-  "TypeScript": "https://www.typescriptlang.org",
-  "Tailwind CSS": "https://tailwindcss.com",
-  "Bootstrap": "https://getbootstrap.com",
-  "HTML5": "https://developer.mozilla.org/en-US/docs/Web/HTML",
-  "CSS3": "https://developer.mozilla.org/en-US/docs/Web/CSS",
-  "Node.js": "https://nodejs.org",
-  "Express": "https://expressjs.com",
-  "Django": "https://www.djangoproject.com",
-  "DRF": "https://www.django-rest-framework.org",
-  "Spring Boot": "https://spring.io/projects/spring-boot",
-  "Flask": "https://flask.palletsprojects.com",
-  "Scikit-learn": "https://scikit-learn.org",
-  "XGBoost": "https://xgboost.readthedocs.io",
-  "Pandas": "https://pandas.pydata.org",
-  "NumPy": "https://numpy.org",
-  "spaCy": "https://spacy.io",
-  "Hugging Face": "https://huggingface.co",
-  "YOLOv8": "https://docs.ultralytics.com",
-  "U-Net": "https://arxiv.org/abs/1505.04597",
-  "EfficientNet-B4": "https://arxiv.org/abs/1905.11946",
-  "MediaPipe": "https://mediapipe.dev",
-  "OpenCV": "https://opencv.org",
-  "CNNs": "https://en.wikipedia.org/wiki/Convolutional_neural_network",
-  "MySQL": "https://www.mysql.com",
-  "PostgreSQL": "https://www.postgresql.org",
-  "MongoDB": "https://www.mongodb.com",
-  "SQLite": "https://www.sqlite.org",
-  "Git": "https://git-scm.com",
-  "Agile Scrum": "https://www.scrum.org",
-  "SDLC": "https://en.wikipedia.org/wiki/Systems_development_life_cycle",
-  "SPM": "https://en.wikipedia.org/wiki/Software_project_management",
-  "SQE": "https://en.wikipedia.org/wiki/Software_quality_assurance",
-  "Code Review": "https://en.wikipedia.org/wiki/Code_review",
-};
+import { ExternalLink, X, Trophy, Briefcase } from "lucide-react";
+import { TECH_LINKS } from "@/lib/constants";
 
 export default function SkillsSection() {
   const ref = useRef(null);
@@ -135,15 +99,19 @@ export default function SkillsSection() {
       {/* Intelligence Dashboard Overlay */}
       <AnimatePresence>
         {selectedId && selectedSkill && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${selectedSkill.label} details`}
+            onKeyDown={(e) => { if (e.key === "Escape") setSelectedId(null); }}
             className="fixed inset-0 z-[200] flex items-center justify-center px-6"
           >
             {/* Backdrop */}
-            <div 
-              className="absolute inset-0 bg-black/80 backdrop-blur-md" 
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
               onClick={() => setSelectedId(null)}
             />
 
@@ -154,8 +122,9 @@ export default function SkillsSection() {
               exit={{ scale: 0.9, y: 20 }}
               className="w-full max-w-4xl liquid-glass rounded-3xl p-8 md:p-12 relative z-10 border border-white/10 overflow-hidden"
             >
-              <button 
+              <button
                 onClick={() => setSelectedId(null)}
+                aria-label="Close dialog"
                 className="absolute top-6 right-6 p-2 rounded-full hover:bg-white/10 transition-colors"
               >
                 <X className="w-6 h-6 text-white/40" />
