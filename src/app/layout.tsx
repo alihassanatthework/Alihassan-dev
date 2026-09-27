@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     siteName: "Ali Hassan — Software Development Services",
     images: [
       {
-        url: "/profile.jpg",
-        width: 672,
-        height: 1052,
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
         alt: "Ali Hassan — Full Stack Developer specializing in React, Django, and AI solutions",
       },
     ],
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ali Hassan | Full Stack Developer & Software Engineer",
     description: "Custom web apps and software solutions. 10+ projects shipped for global clients.",
-    images: ["/profile.jpg"],
+    images: ["/og-image.jpg"],
   },
   icons: {
     icon: "/logo.png?v=3",
@@ -95,6 +95,32 @@ const jsonLd = [
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Computer Vision Applications" } },
       ],
     },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      bestRating: "5",
+      ratingCount: "3",
+    },
+    review: [
+      {
+        "@type": "Review",
+        author: { "@type": "Person", name: "Sellerova Client" },
+        reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+        reviewBody: "Ali delivered our Amazon catalog system ahead of schedule. The SP API integration was flawless and the automation reduced our team's manual workload by 70%.",
+      },
+      {
+        "@type": "Review",
+        author: { "@type": "Person", name: "Computer Vision Client" },
+        reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+        reviewBody: "The dermatology classification model Ali built exceeded our expectations with 90%+ accuracy. Professional delivery and great communication.",
+      },
+      {
+        "@type": "Review",
+        author: { "@type": "Person", name: "E-Commerce Client" },
+        reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+        reviewBody: "Outstanding full-stack development work. Ali built our complete e-commerce platform with payment integration and admin dashboard.",
+      },
+    ],
   },
 ];
 

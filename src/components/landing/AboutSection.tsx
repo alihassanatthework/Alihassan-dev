@@ -50,7 +50,7 @@ export default function AboutSection() {
             className="relative group rounded-3xl overflow-hidden liquid-glass border border-white/10 shadow-2xl"
           >
             <Image
-              src="/journey.png"
+              src="/journey.webp"
               alt="Ali Hassan's development journey"
               width={600}
               height={400}
