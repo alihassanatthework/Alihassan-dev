@@ -259,18 +259,6 @@ export const cv = {
       link: "https://github.com/alihassanatthework/olympic-dashborad",
     },
     {
-      slug: "cv-portfolio",
-      title: "Computer vision",
-      abbr: "CV",
-      bgGradient: "#000000",
-      badge: "10+ CLIENTS",
-      badgeColor: "#ec4899",
-      desc: "CNN classifiers 92%+, real time YOLOv8 ONNX export. 10+ client engagements.",
-      link: "https://github.com/alihassanatthework/fyp",
-      tags: ["Python", "YOLOv8", "OpenCV", "MediaPipe", "TensorFlow", "ONNX"],
-      category: ["vision", "freelance"],
-    },
-    {
       slug: "freelance-apps",
       title: "10+ freelance web applications",
       abbr: "x10",
