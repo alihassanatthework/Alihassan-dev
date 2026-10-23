@@ -168,7 +168,8 @@ export const cv = {
       tags: ["Django", "Python", "PDF Tools", "Image Processing"],
       category: ["fullstack", "freelance"],
       link: "https://toolsvera.com",
-      logo: "/pl/toolsvera.ico"
+      logo: "/pl/toolsvera.png",
+      thumbnail: "/pl/thumb-toolsvera.jpg",
     },
     {
       slug: "me-dermatology",
@@ -181,6 +182,7 @@ export const cv = {
       tags: ["React", "Django", "YOLOv8", "U-Net", "EfficientNet-B4", "XGBoost"],
       category: ["ml", "vision"],
       link: "https://ai-skin-scalp-personalized-treatmen.vercel.app/",
+      thumbnail: "/pl/thumb-meai.jpg",
     },
     {
       slug: "blazon",
@@ -193,6 +195,7 @@ export const cv = {
       tags: ["Next.js", "React", "Tailwind CSS", "Vercel"],
       category: ["fullstack", "freelance"],
       link: "https://amazon-agency-preview.vercel.app/",
+      thumbnail: "/pl/thumb-blazon.jpg",
     },
     {
       slug: "forge-gym",
@@ -205,6 +208,7 @@ export const cv = {
       tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
       category: ["fullstack", "freelance"],
       link: "https://forge-gym-two-psi.vercel.app/",
+      thumbnail: "/pl/thumb-forge.jpg",
     },
     {
       slug: "marrow-hearth",
@@ -217,6 +221,7 @@ export const cv = {
       tags: ["Next.js", "React", "Tailwind CSS", "Vercel"],
       category: ["fullstack", "freelance"],
       link: "https://restaurants-huda-masood.vercel.app/",
+      thumbnail: "/pl/thumb-marrow.jpg",
     },
     {
       slug: "job-portal",
@@ -244,7 +249,8 @@ export const cv = {
       tags: ["MERN", "Amazon SP API", "MongoDB", "Node.js"],
       category: ["fullstack", "freelance"],
       link: "https://sellerova.com",
-      logo: "/pl/sellerova-logo.png"
+      logo: "/pl/sellerova-logo.png",
+      thumbnail: "/pl/thumb-sellerova.jpg",
     },
     {
       slug: "olympics",

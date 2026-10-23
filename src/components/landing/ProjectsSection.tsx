@@ -67,7 +67,7 @@ export default function ProjectsSection() {
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((p) => {
-              const project = p as typeof p & { link?: string; multiLinks?: { label: string; url: string }[]; logo?: string };
+              const project = p as typeof p & { link?: string; multiLinks?: { label: string; url: string }[]; logo?: string; thumbnail?: string };
               const hasLink = project.link;
               const hasMultiLinks = project.multiLinks && project.multiLinks.length > 0;
               
@@ -92,30 +92,42 @@ export default function ProjectsSection() {
                     )}
                   >
                     {/* Visual Header */}
-                    <div 
+                    <div
                       className="relative h-48 md:h-64 flex items-center justify-center overflow-hidden"
                       style={{ background: p.bgGradient || "#000000" }}
                     >
-                      {/* Radial Texture Glow */}
-                      {!project.logo && (
+                      {/* Thumbnail Background */}
+                      {project.thumbnail && (
+                        <>
+                          <img
+                            src={project.thumbnail}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500 z-[1]" />
+                        </>
+                      )}
+
+                      {/* Radial Texture Glow (only when no thumbnail) */}
+                      {!project.thumbnail && !project.logo && (
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.08)_0%,_transparent_65%)] pointer-events-none z-0" />
                       )}
 
                       {/* Logo or Text Abbreviation */}
                       {project.logo ? (
-                        <div className="relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center z-10 p-4">
-                          <img 
-                            src={project.logo} 
+                        <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center z-10">
+                          <img
+                            src={project.logo}
                             alt={`${p.title} logo`}
                             className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-110"
-                            style={{ filter: "drop-shadow(0 0 10px rgba(255,255,255,0.2))" }}
+                            style={{ filter: "drop-shadow(0 0 15px rgba(255,255,255,0.3))" }}
                           />
                         </div>
-                      ) : (
+                      ) : !project.thumbnail ? (
                         <span className="relative z-10 font-mono text-4xl md:text-5xl font-bold text-white/20 transition-transform duration-700 group-hover:scale-110 group-hover:text-white/30">
                           {p.abbr}
                         </span>
-                      )}
+                      ) : null}
                       
                       {p.badge && (
                         <div className="absolute top-4 right-4 liquid-glass rounded-full px-3 py-1 backdrop-blur-md border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.2)] z-20">
