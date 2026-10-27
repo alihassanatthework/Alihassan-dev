@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Award, GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -82,6 +82,15 @@ const timelineData = [
 
 export default function TimelineSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end end"]
@@ -141,8 +150,9 @@ export default function TimelineSection() {
                     isLeft ? "md:mr-auto" : "md:ml-auto"
                   )}>
                     <motion.div
-                      initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
-                      whileInView={{ opacity: 1, x: 0 }}
+                      key={`tl-${idx}-${isMobile ? 'm' : 'd'}`}
+                      initial={{ opacity: 0, x: isMobile ? 0 : (isLeft ? -100 : 100), y: isMobile ? 40 : 0 }}
+                      whileInView={{ opacity: 1, x: 0, y: 0 }}
                       viewport={{ once: true, margin: "-100px" }}
                       transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
                       className={cn(
